@@ -10,11 +10,12 @@ cd [kansio] vaihtaa kansiota, cd .. menee yhden tason kansiossa alaspäin
 
 mkdir [kansio] tekee uuden kansion.
 
-=> git config --global --edit
+=> JOKO git config --global --edit
 
 	Laita omat tiedot kuntoon, github account.
+    Nimen ja sähköpostin kohdalta # pois.
 
-git config --global user.name "Your Name"
+TAI git config --global user.name "Your Name"
 
 git config --global user.email you@example.com
 
@@ -25,6 +26,6 @@ git config --global user.email you@example.com
 => git pull origin master
 
 :
-testtestestst
+
 
 

@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.fineline.domain.Bring;
 import com.fineline.domain.Innight;
 import com.fineline.domain.Postnord;
+import com.fineline.domain.Users;
 import com.fineline.domain.WorkDay;
 
 public class WorkDayRowMapper implements RowMapper<WorkDay> {
@@ -18,8 +19,12 @@ public class WorkDayRowMapper implements RowMapper<WorkDay> {
 		Bring b = new Bring();
 		Innight i = new Innight();
 		Postnord p = new Postnord();
+		Users u = new Users();
+		
+		u.setId(rs.getInt("user_id"));
 		
 		w.setDay_id(rs.getInt("day_id"));
+		w.setUser_id(u);
 		w.setDay_date(rs.getDate("day_date"));
 		w.setDay_route(rs.getString("day_route"));
 		w.setDay_carUser(rs.getString("day_carUser"));

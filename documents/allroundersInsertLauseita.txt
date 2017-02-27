@@ -1,0 +1,10 @@
+INSERT INTO Users (username, password, user_firstname, user_lastname) VALUES ('popkoff', 'salasana', 'etunimi', 'sukunimi');
+
+INSERT INTO Postnord (pn_jako, pn_nouto, pn_unknown, pn_notime) VALUES (6,4,0,0);
+
+INSERT INTO Bring (b_jako, b_nouto, b_dhlReturn, b_notime) VALUES (15,2,5,0);
+
+INSERT INTO Innight (in_kollit, in_stopit) VALUES (2,5);
+
+INSERT INTO WorkDay (user_id, pn_id, b_id, in_id, day_date, day_route, day_carUser, day_startKm, day_startTime, day_breaksMin, day_endTime, day_endKm, day_addInfo)
+VALUES (1, 1, 1, 1, "2017-02-14", "HEL001", "AAA-123", 1500, CURRENT_TIMESTAMP(), "00:15:00", CURRENT_TIMESTAMP(), 1700, "Rengasvaihto jossakin");

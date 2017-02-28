@@ -18,6 +18,10 @@ public class WorkDay {
 	private String day_endTime;
 	private int day_endKm;
 	private String day_addInfo;
+	private double day_workHours;
+	private double day_eveningHours;
+	private double day_nightHours;
+	private double day_routeStats;
 	
 	public WorkDay(){
 		
@@ -147,6 +151,40 @@ public class WorkDay {
 	public void setDay_addInfo(String day_addInfo) {
 		this.day_addInfo = day_addInfo;
 	}
+	
+	
+
+	public double getDay_workHours() {
+		return day_workHours;
+	}
+
+	public void setDay_workHours(double day_workHours) {
+		this.day_workHours = day_workHours;
+	}
+
+	public double getDay_eveningHours() {
+		return day_eveningHours;
+	}
+
+	public void setDay_eveningHours(double day_eveningHours) {
+		this.day_eveningHours = day_eveningHours;
+	}
+
+	public double getDay_nightHours() {
+		return day_nightHours;
+	}
+
+	public void setDay_nightHours(double day_nightHours) {
+		this.day_nightHours = day_nightHours;
+	}
+
+	public double getDay_routeStats() {
+		return day_routeStats;
+	}
+
+	public void setDay_routeStats(double day_routeStats) {
+		this.day_routeStats = day_routeStats;
+	}
 
 	@Override
 	public String toString() {
@@ -157,15 +195,10 @@ public class WorkDay {
 				+ day_startKm + ", day_startTime=" + day_startTime
 				+ ", day_breaksMin=" + day_breaksMin + ", day_endTime="
 				+ day_endTime + ", day_endKm=" + day_endKm + ", day_addInfo="
-				+ day_addInfo + "]";
+				+ day_addInfo + ", day_workHours=" + day_workHours
+				+ ", day_eveningHours=" + day_eveningHours
+				+ ", day_nightHours=" + day_nightHours + ", day_routeStats="
+				+ day_routeStats + "]";
 	}
-	
-	
-
-	
-	
-	
-	
-	
 
 }

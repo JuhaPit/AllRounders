@@ -1,5 +1,7 @@
 package com.fineline.web;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,24 +13,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fineline.domain.Topten;
 import com.fineline.domain.WorkDay;
 import com.fineline.service.WorkDayDAO;
+import com.fineline.domain.WorkDay_GoogleSheets;
+import com.fineline.service.GoogleDataFetcher;
 
 
 @Controller
 @ResponseBody
 public class ARController {
-	
+	/*
 	@Inject
 	WorkDayDAO workdaydao;
-	
-	@RequestMapping("*")
-	public String hello(){
+	*/
+	@RequestMapping(value = "/test", produces = "application/json", method = RequestMethod.GET)
+	public List<Topten> hello() throws IOException{
 		
-		return "Demo";
+		//GoogleDataFetcher.getSheetsService();
+		//GoogleDataFetcher.authorize();
+		List<Topten> topten = GoogleDataFetcher.topten();
+		
+		return topten;
 		
 	}
 	
+	
+	
+	
+	/*
 	@RequestMapping(value = "/workdays", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> listAllWorkDays() {
 
@@ -41,5 +54,5 @@ public class ARController {
 
 		return new ResponseEntity<Object>(workdays, HttpStatus.OK);
 	}
-
+	*/
 }

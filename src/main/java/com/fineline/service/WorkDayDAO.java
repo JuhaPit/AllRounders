@@ -3,9 +3,9 @@ package com.fineline.service;
 import java.util.List;
 
 import javax.inject.Inject;
-
+/*
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.RowMapper; */
 import org.springframework.stereotype.Repository;
 
 import com.fineline.domain.WorkDay;
@@ -13,7 +13,7 @@ import com.fineline.domain.WorkDay;
 
 @Repository
 public class WorkDayDAO {
-
+	/*
 	@Inject
 	private JdbcTemplate jdbcTemplate;
 
@@ -33,4 +33,6 @@ public class WorkDayDAO {
 
 		return workdays;
 	}
+	
+	*/
 }

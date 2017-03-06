@@ -1,5 +1,5 @@
 package com.fineline.service;
-
+/*
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -17,7 +17,7 @@ import com.fineline.domain.Users;
 import com.fineline.domain.WorkDay;
 
 public class WorkDayRowMapper implements RowMapper<WorkDay> {
-
+	
 	public WorkDay mapRow(ResultSet rs, int rowNum) throws SQLException {
 		
 		Hours hours = new Hours();
@@ -68,3 +68,4 @@ public class WorkDayRowMapper implements RowMapper<WorkDay> {
 	}
 	
 }
+*/

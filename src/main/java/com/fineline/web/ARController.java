@@ -59,6 +59,7 @@ public class ARController {
 	public List<Topten> topVantaa() throws IOException{
 		
 		List<Topten> topvan = GoogleDataFetcher.topvan();
+		System.out.println();
 		return topvan;
 		
 	}

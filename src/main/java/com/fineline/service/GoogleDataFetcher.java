@@ -17,10 +17,15 @@ import com.google.api.services.sheets.v4.Sheets;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import com.fineline.domain.Topten;
@@ -292,7 +297,16 @@ public class GoogleDataFetcher {
 		List<List<Object>> values = response.getValues();
 
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
-
+		
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = new Date();
+		Date date1 = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+        cal.add(Calendar.MONTH, -1);
+        date = cal.getTime();
+        System.out.println(dateFormat.format(date));
+		
 		if (values == null || values.size() == 0) {
 			System.out.println("No data found.");
 		} else {
@@ -346,8 +360,19 @@ public class GoogleDataFetcher {
 					break;
 				}
 				if (w.getRoute().contains("HEL")){
+					
+					try {
+						date1 = dateFormat.parse(w.getDate());
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					
+				
+					if(date1.after(date)){
+						System.out.println(date + "----" + date1);
+					
 				workdays.add(w);
-				}
+			}}
 			}
 		}
 
@@ -394,6 +419,16 @@ public class GoogleDataFetcher {
 
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
 
+		
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = new Date();
+		Date date1 = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+        cal.add(Calendar.MONTH, -1);
+        date = cal.getTime();
+		
+		
 		if (values == null || values.size() == 0) {
 			System.out.println("No data found.");
 		} else {
@@ -447,9 +482,18 @@ public class GoogleDataFetcher {
 					break;
 				}
 				if (w.getRoute().contains("VAN")){
-				workdays.add(w);
+					
+					try {
+					date1 = dateFormat.parse(w.getDate());
+				} catch (ParseException e) {
+					e.printStackTrace();
 				}
-			}
+				
+			
+				if(date1.after(date)){				
+			workdays.add(w);
+		
+			}}}
 		}
 
 		

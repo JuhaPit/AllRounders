@@ -48,6 +48,21 @@ public class ARController {
 		
 	}
 	
+	@RequestMapping(value = "/tophel", produces = "application/json", method = RequestMethod.GET)
+	public List<Topten> topHelsinki() throws IOException{
+		
+		List<Topten> tophel = GoogleDataFetcher.tophel();
+		return tophel;
+		
+	}
+	@RequestMapping(value = "/topvan", produces = "application/json", method = RequestMethod.GET)
+	public List<Topten> topVantaa() throws IOException{
+		
+		List<Topten> topvan = GoogleDataFetcher.topvan();
+		return topvan;
+		
+	}
+	
 	
 	/*
 	@RequestMapping(value = "/workdays", produces = "application/json", method = RequestMethod.GET)

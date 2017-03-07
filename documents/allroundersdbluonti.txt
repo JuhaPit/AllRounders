@@ -9,22 +9,22 @@ user_lastname VARCHAR(30) NOT NULL
 CREATE TABLE WorkDay
 (
 day_id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-user_id int(6) UNSIGNED,
+user_id INT(6) UNSIGNED,
 FOREIGN KEY(user_id) REFERENCES Users(id),
-pn_id int(6) UNSIGNED,
+pn_id INT(6) UNSIGNED,
 FOREIGN KEY(pn_id) REFERENCES Postnord(pn_id),
-b_id int(6) UNSIGNED,
+b_id INT(6) UNSIGNED,
 FOREIGN KEY(b_id) REFERENCES Bring(b_id),
-in_id int(6) UNSIGNED,
+in_id INT(6) UNSIGNED,
 FOREIGN KEY(in_id) REFERENCES Innight(in_id),
-day_date date NOT NULL,
+day_date DATE NOT NULL,
 day_route VARCHAR(15) NOT NULL,
 day_carUser VARCHAR(15) NOT NULL,
-day_startKm int(8) NOT NULL,
-day_startTime time NOT NULL,
-day_breaksMin time NOT NULL,
-day_endTime time NOT NULL,
-day_endKm int(8) NOT NULL,
+day_startKm INT(8) NOT NULL,
+day_startTime TIME NOT NULL,
+day_breaksMin TIME NOT NULL,
+day_endTime TIME NOT NULL,
+day_endKm INT(8) NOT NULL,
 day_addInfo VARCHAR(150) NOT NULL
 );
 

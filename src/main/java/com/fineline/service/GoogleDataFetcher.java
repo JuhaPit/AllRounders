@@ -201,5 +201,79 @@ public class GoogleDataFetcher {
 		return topten;
 	}
 	
-	
+	public static List<WorkDay_GoogleSheets> listAll() throws IOException {
+		
+		Sheets service = getSheetsService();
+
+		WorkDay_GoogleSheets d = new WorkDay_GoogleSheets();
+
+		// Prints the names and majors of students in a sample spreadsheet:
+		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+		String spreadsheetId = "1YmlQACbcTwP6vTX0qAd45iL-Nw8hqv7rCTDLGQWtEX0";
+		String range = "Näkymä 1!A3:AE";
+		ValueRange response = service.spreadsheets().values()
+				.get(spreadsheetId, range).execute();
+		List<List<Object>> values = response.getValues();
+
+		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
+
+		if (values == null || values.size() == 0) {
+			System.out.println("No data found.");
+		} else {
+			System.out.println("");
+			for (List row : values) {
+				// Print columns A and AE, which correspond to indices 0 and 30.
+				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
+				if (row.get(0).toString().length() == 0 || row.get(8).toString().length() == 0) {
+					break;
+				}
+				w.setDate(row.get(0).toString());
+				w.setName(row.get(1).toString());
+				w.setCar_number(row.get(2).toString());
+				w.setStart_km(row.get(3).toString());
+				w.setStart_time(row.get(4).toString());
+				w.setEnd_time(row.get(5).toString());
+				w.setBreaks(row.get(6).toString());
+				w.setEnd_km(row.get(7).toString());
+				w.setEvening_hours(row.get(8).toString());
+				w.setNight_hours(row.get(9).toString());
+				w.setHours_total(row.get(10).toString());
+
+				
+				w.setKm_total(row.get(14).toString());
+				w.setBasic_hours(row.get(15).toString());
+				w.setRoute(row.get(16).toString());
+				w.setPostnord_deliveries(row.get(17).toString());
+				w.setPostnord_pickups(row.get(18).toString());
+				w.setPostnord_unknown(row.get(19).toString());
+				w.setPostnord_total(row.get(20).toString());
+				w.setBring_deliveries(row.get(21).toString());
+				w.setBring_pickups(row.get(22).toString());
+				w.setBring_dhl_returns(row.get(23).toString());
+				w.setBring_total(row.get(24).toString());
+				w.setInnight_deliveries(row.get(25).toString());
+				w.setInnight_stops(row.get(26).toString());
+				w.setExtra_info(row.get(27).toString());
+				w.setTotal_deliveries(row.get(28).toString());
+				w.setTotal_pickups(row.get(29).toString());
+				
+				try {
+					w.setEvening_hours_decimal(Double.parseDouble(row.get(11)
+							.toString()));
+					w.setNight_hours_decimal(Double.parseDouble(row.get(12)
+							.toString()));
+					w.setHours_total_decimal(Double.parseDouble(row.get(13)
+							.toString()));
+					w.setEffiency(Double.parseDouble(row.get(30).toString()));
+				} catch (Exception e) {
+					System.out.println("Räjähti");
+					break;
+				}
+				
+				workdays.add(w);
+			}
+		}
+
+		return workdays;
+	}
 }

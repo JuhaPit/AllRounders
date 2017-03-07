@@ -29,7 +29,7 @@ public class ARController {
 	*/
 	@RequestMapping(value = "/test", produces = "application/json", method = RequestMethod.GET)
 	public List<Topten> hello() throws IOException{
-		
+		System.out.println("ARController.hello()");
 		//GoogleDataFetcher.getSheetsService();
 		//GoogleDataFetcher.authorize();
 		List<Topten> topten = GoogleDataFetcher.topten();
@@ -38,7 +38,15 @@ public class ARController {
 		
 	}
 	
-	
+	@RequestMapping(value = "/listall", produces = "application/json", method = RequestMethod.GET)
+	public List<WorkDay_GoogleSheets> listEverything() throws IOException{
+		
+		//GoogleDataFetcher.getSheetsService();
+		//GoogleDataFetcher.authorize();
+		List<WorkDay_GoogleSheets> listall = GoogleDataFetcher.listAll();
+		return listall;
+		
+	}
 	
 	
 	/*

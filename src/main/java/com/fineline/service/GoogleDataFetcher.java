@@ -77,6 +77,7 @@ public class GoogleDataFetcher {
 	 * @throws IOException
 	 */
 	public static Credential authorize() throws IOException {
+		
 		// Load client secrets.
 		InputStream in = GoogleDataFetcher.class
 				.getResourceAsStream("/client_secret.json");
@@ -87,7 +88,7 @@ public class GoogleDataFetcher {
 		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
 				HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
 				.setDataStoreFactory(DATA_STORE_FACTORY)
-				.setAccessType("offline").build();
+				.setAccessType("offline").setApprovalPrompt("auto").build();
 		Credential credential = new AuthorizationCodeInstalledApp(flow,
 				new LocalServerReceiver()).authorize("user");
 		System.out.println("Credentials saved to "
@@ -201,7 +202,7 @@ public class GoogleDataFetcher {
 		}
 
 
-		topten = topten.subList(0, 10);
+		topten = topten.subList(0, 7);
 		System.out.println(topten.size());
 		return topten;
 	}
@@ -369,8 +370,7 @@ public class GoogleDataFetcher {
 					
 				
 					if(date1.after(date)){
-						System.out.println(date + "----" + date1);
-					
+						
 				workdays.add(w);
 			}}
 			}
@@ -397,8 +397,8 @@ public class GoogleDataFetcher {
 		}
 
 
-		tophel = tophel.subList(0, 15);
-		System.out.println(tophel.size());
+		tophel = tophel.subList(0, 7);
+
 		return tophel;
 	}
 	
@@ -516,9 +516,10 @@ public class GoogleDataFetcher {
 			}
 		}
 
+		if (topvan.size() > 6){
+			topvan = topvan.subList(0, 7);
+		}
 
-		topvan = topvan.subList(0, 5);
-		System.out.println(topvan.size());
 		return topvan;
 	}
 }

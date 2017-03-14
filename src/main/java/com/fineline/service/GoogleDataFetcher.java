@@ -77,7 +77,7 @@ public class GoogleDataFetcher {
 	 * @throws IOException
 	 */
 	public static Credential authorize() throws IOException {
-		
+
 		// Load client secrets.
 		InputStream in = GoogleDataFetcher.class
 				.getResourceAsStream("/client_secret.json");
@@ -107,12 +107,10 @@ public class GoogleDataFetcher {
 		return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
 				.setApplicationName(APPLICATION_NAME).build();
 	}
-	
-	public static List<Topten> topten() throws IOException {
-		
-		Sheets service = getSheetsService();
 
-		WorkDay_GoogleSheets d = new WorkDay_GoogleSheets();
+	public static List<Topten> topten() throws IOException {
+
+		Sheets service = getSheetsService();
 
 		// Prints the names and majors of students in a sample spreadsheet:
 		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
@@ -121,6 +119,14 @@ public class GoogleDataFetcher {
 		ValueRange response = service.spreadsheets().values()
 				.get(spreadsheetId, range).execute();
 		List<List<Object>> values = response.getValues();
+
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = new Date();
+		Date date1 = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.MONTH, -1);
+		date = cal.getTime();
 
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
 
@@ -131,7 +137,8 @@ public class GoogleDataFetcher {
 			for (List row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(0).toString().length() == 0 || row.get(8).toString().length() == 0) {
+				if (row.get(0).toString().length() == 0
+						|| row.get(8).toString().length() == 0) {
 					break;
 				}
 				w.setDate(row.get(0).toString());
@@ -146,7 +153,6 @@ public class GoogleDataFetcher {
 				w.setNight_hours(row.get(9).toString());
 				w.setHours_total(row.get(10).toString());
 
-				
 				w.setKm_total(row.get(14).toString());
 				w.setBasic_hours(row.get(15).toString());
 				w.setRoute(row.get(16).toString());
@@ -163,7 +169,7 @@ public class GoogleDataFetcher {
 				w.setExtra_info(row.get(27).toString());
 				w.setTotal_deliveries(row.get(28).toString());
 				w.setTotal_pickups(row.get(29).toString());
-				
+
 				try {
 					w.setEvening_hours_decimal(Double.parseDouble(row.get(11)
 							.toString()));
@@ -176,42 +182,48 @@ public class GoogleDataFetcher {
 					System.out.println("Räjähti");
 					break;
 				}
-				
-				workdays.add(w);
+
+				try {
+					date1 = dateFormat.parse(w.getDate());
+					if (date1.after(date)) {
+						workdays.add(w);
+					}
+				} catch (Exception e) {
+
+				}
+
 			}
 		}
 
-		
-		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency).reversed());
-		
+		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency)
+				.reversed());
+
 		List<String> names = new ArrayList<String>();
-		
+
 		String new_name;
-		
+
 		List<Topten> topten = new ArrayList<Topten>();
 		for (int i = 0; i < workdays.size(); i++) {
-			
+
 			new_name = workdays.get(i).getName().toLowerCase();
-			
-			if (!names.contains(new_name)){
-								
+
+			if (!names.contains(new_name)) {
+
 				names.add(new_name);
-				Topten entry = new Topten(workdays.get(i).getName(), workdays.get(i).getEffiency(), workdays.get(i).getDate());
+				Topten entry = new Topten(workdays.get(i).getName(), workdays
+						.get(i).getEffiency(), workdays.get(i).getDate());
 				topten.add(entry);
 			}
 		}
-
 
 		topten = topten.subList(0, 7);
 		System.out.println(topten.size());
 		return topten;
 	}
-	
-	public static List<WorkDay_GoogleSheets> listAll() throws IOException {
-		
-		Sheets service = getSheetsService();
 
-		WorkDay_GoogleSheets d = new WorkDay_GoogleSheets();
+	public static List<WorkDay_GoogleSheets> listAll() throws IOException {
+
+		Sheets service = getSheetsService();
 
 		// Prints the names and majors of students in a sample spreadsheet:
 		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
@@ -230,7 +242,8 @@ public class GoogleDataFetcher {
 			for (List row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(0).toString().length() == 0 || row.get(8).toString().length() == 0) {
+				if (row.get(0).toString().length() == 0
+						|| row.get(8).toString().length() == 0) {
 					break;
 				}
 				w.setDate(row.get(0).toString());
@@ -245,7 +258,6 @@ public class GoogleDataFetcher {
 				w.setNight_hours(row.get(9).toString());
 				w.setHours_total(row.get(10).toString());
 
-				
 				w.setKm_total(row.get(14).toString());
 				w.setBasic_hours(row.get(15).toString());
 				w.setRoute(row.get(16).toString());
@@ -262,7 +274,7 @@ public class GoogleDataFetcher {
 				w.setExtra_info(row.get(27).toString());
 				w.setTotal_deliveries(row.get(28).toString());
 				w.setTotal_pickups(row.get(29).toString());
-				
+
 				try {
 					w.setEvening_hours_decimal(Double.parseDouble(row.get(11)
 							.toString()));
@@ -275,19 +287,17 @@ public class GoogleDataFetcher {
 					System.out.println("Räjähti");
 					break;
 				}
-				
+
 				workdays.add(w);
 			}
 		}
 
 		return workdays;
 	}
-	
-	public static List<Topten> tophel() throws IOException {
-		
-		Sheets service = getSheetsService();
 
-		WorkDay_GoogleSheets d = new WorkDay_GoogleSheets();
+	public static List<Topten> tophel() throws IOException {
+
+		Sheets service = getSheetsService();
 
 		// Prints the names and majors of students in a sample spreadsheet:
 		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
@@ -298,16 +308,16 @@ public class GoogleDataFetcher {
 		List<List<Object>> values = response.getValues();
 
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
-		
+
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = new Date();
 		Date date1 = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-        cal.add(Calendar.MONTH, -1);
-        date = cal.getTime();
-        System.out.println(dateFormat.format(date));
-		
+		cal.add(Calendar.MONTH, -1);
+		date = cal.getTime();
+		System.out.println(dateFormat.format(date));
+
 		if (values == null || values.size() == 0) {
 			System.out.println("No data found.");
 		} else {
@@ -315,7 +325,8 @@ public class GoogleDataFetcher {
 			for (List row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(0).toString().length() == 0 || row.get(8).toString().length() == 0) {
+				if (row.get(0).toString().length() == 0
+						|| row.get(8).toString().length() == 0) {
 					break;
 				}
 				w.setDate(row.get(0).toString());
@@ -330,7 +341,6 @@ public class GoogleDataFetcher {
 				w.setNight_hours(row.get(9).toString());
 				w.setHours_total(row.get(10).toString());
 
-				
 				w.setKm_total(row.get(14).toString());
 				w.setBasic_hours(row.get(15).toString());
 				w.setRoute(row.get(16).toString());
@@ -347,7 +357,7 @@ public class GoogleDataFetcher {
 				w.setExtra_info(row.get(27).toString());
 				w.setTotal_deliveries(row.get(28).toString());
 				w.setTotal_pickups(row.get(29).toString());
-				
+
 				try {
 					w.setEvening_hours_decimal(Double.parseDouble(row.get(11)
 							.toString()));
@@ -360,54 +370,51 @@ public class GoogleDataFetcher {
 					System.out.println("Räjähti");
 					break;
 				}
-				if (w.getRoute().contains("HEL")){
-					
+				if (w.getRoute().contains("HEL")) {
+
 					try {
 						date1 = dateFormat.parse(w.getDate());
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
-					
-				
-					if(date1.after(date)){
-						
-				workdays.add(w);
-			}}
+
+					if (date1.after(date)) {
+
+						workdays.add(w);
+					}
+				}
 			}
 		}
 
-		
-		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency).reversed());
-		
+		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency)
+				.reversed());
+
 		List<String> names = new ArrayList<String>();
-		
+
 		String new_name;
-		
+
 		List<Topten> tophel = new ArrayList<Topten>();
 		for (int i = 0; i < workdays.size(); i++) {
-			
+
 			new_name = workdays.get(i).getName().toLowerCase();
-			
-			if (!names.contains(new_name)){
-								
+
+			if (!names.contains(new_name)) {
+
 				names.add(new_name);
-				Topten entry = new Topten(workdays.get(i).getName(), workdays.get(i).getEffiency(), workdays.get(i).getDate());
+				Topten entry = new Topten(workdays.get(i).getName(), workdays
+						.get(i).getEffiency(), workdays.get(i).getDate());
 				tophel.add(entry);
 			}
 		}
-
 
 		tophel = tophel.subList(0, 7);
 
 		return tophel;
 	}
-	
-	
-	public static List<Topten> topvan() throws IOException {
-		
-		Sheets service = getSheetsService();
 
-		WorkDay_GoogleSheets d = new WorkDay_GoogleSheets();
+	public static List<Topten> topvan() throws IOException {
+
+		Sheets service = getSheetsService();
 
 		// Prints the names and majors of students in a sample spreadsheet:
 		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
@@ -419,16 +426,14 @@ public class GoogleDataFetcher {
 
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
 
-		
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = new Date();
 		Date date1 = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-        cal.add(Calendar.MONTH, -1);
-        date = cal.getTime();
-		
-		
+		cal.add(Calendar.MONTH, -1);
+		date = cal.getTime();
+
 		if (values == null || values.size() == 0) {
 			System.out.println("No data found.");
 		} else {
@@ -436,7 +441,8 @@ public class GoogleDataFetcher {
 			for (List row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(0).toString().length() == 0 || row.get(8).toString().length() == 0) {
+				if (row.get(0).toString().length() == 0
+						|| row.get(8).toString().length() == 0) {
 					break;
 				}
 				w.setDate(row.get(0).toString());
@@ -451,7 +457,6 @@ public class GoogleDataFetcher {
 				w.setNight_hours(row.get(9).toString());
 				w.setHours_total(row.get(10).toString());
 
-				
 				w.setKm_total(row.get(14).toString());
 				w.setBasic_hours(row.get(15).toString());
 				w.setRoute(row.get(16).toString());
@@ -468,7 +473,7 @@ public class GoogleDataFetcher {
 				w.setExtra_info(row.get(27).toString());
 				w.setTotal_deliveries(row.get(28).toString());
 				w.setTotal_pickups(row.get(29).toString());
-				
+
 				try {
 					w.setEvening_hours_decimal(Double.parseDouble(row.get(11)
 							.toString()));
@@ -481,45 +486,178 @@ public class GoogleDataFetcher {
 					System.out.println("Räjähti");
 					break;
 				}
-				if (w.getRoute().contains("VAN")){
-					
+				if (w.getRoute().contains("VAN")) {
+
 					try {
-					date1 = dateFormat.parse(w.getDate());
-				} catch (ParseException e) {
-					e.printStackTrace();
+						date1 = dateFormat.parse(w.getDate());
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+
+					if (date1.after(date)) {
+						workdays.add(w);
+
+					}
 				}
-				
-			
-				if(date1.after(date)){				
-			workdays.add(w);
-		
-			}}}
+			}
 		}
 
-		
-		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency).reversed());
-		
+		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency)
+				.reversed());
+
 		List<String> names = new ArrayList<String>();
-		
+
 		String new_name;
-		
+
 		List<Topten> topvan = new ArrayList<Topten>();
 		for (int i = 0; i < workdays.size(); i++) {
-			
+
 			new_name = workdays.get(i).getName().toLowerCase();
-			
-			if (!names.contains(new_name)){
-								
+
+			if (!names.contains(new_name)) {
+
 				names.add(new_name);
-				Topten entry = new Topten(workdays.get(i).getName(), workdays.get(i).getEffiency(), workdays.get(i).getDate());
+				Topten entry = new Topten(workdays.get(i).getName(), workdays
+						.get(i).getEffiency(), workdays.get(i).getDate());
 				topvan.add(entry);
 			}
 		}
 
-		if (topvan.size() > 6){
+		if (topvan.size() > 6) {
 			topvan = topvan.subList(0, 7);
 		}
 
 		return topvan;
 	}
+
+	public static List<Topten> driverAvg(String name) throws IOException {
+
+		Sheets service = getSheetsService();
+
+		// Prints the names and majors of students in a sample spreadsheet:
+		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+		String spreadsheetId = "1YmlQACbcTwP6vTX0qAd45iL-Nw8hqv7rCTDLGQWtEX0";
+		String range = "Näkymä 1!A3:AE";
+		ValueRange response = service.spreadsheets().values()
+				.get(spreadsheetId, range).execute();
+		List<List<Object>> values = response.getValues();
+
+		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
+
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = new Date();
+		Date date1 = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.MONTH, -1);
+		date = cal.getTime();
+
+		if (values == null || values.size() == 0) {
+			System.out.println("No data found.");
+		} else {
+			System.out.println("");
+			for (List row : values) {
+				// Print columns A and AE, which correspond to indices 0 and 30.
+				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
+				if (row.get(0).toString().length() == 0
+						|| row.get(8).toString().length() == 0) {
+					break;
+				}
+				w.setDate(row.get(0).toString());
+				w.setName(row.get(1).toString());
+				w.setCar_number(row.get(2).toString());
+				w.setStart_km(row.get(3).toString());
+				w.setStart_time(row.get(4).toString());
+				w.setEnd_time(row.get(5).toString());
+				w.setBreaks(row.get(6).toString());
+				w.setEnd_km(row.get(7).toString());
+				w.setEvening_hours(row.get(8).toString());
+				w.setNight_hours(row.get(9).toString());
+				w.setHours_total(row.get(10).toString());
+
+				w.setKm_total(row.get(14).toString());
+				w.setBasic_hours(row.get(15).toString());
+				w.setRoute(row.get(16).toString());
+				w.setPostnord_deliveries(row.get(17).toString());
+				w.setPostnord_pickups(row.get(18).toString());
+				w.setPostnord_unknown(row.get(19).toString());
+				w.setPostnord_total(row.get(20).toString());
+				w.setBring_deliveries(row.get(21).toString());
+				w.setBring_pickups(row.get(22).toString());
+				w.setBring_dhl_returns(row.get(23).toString());
+				w.setBring_total(row.get(24).toString());
+				w.setInnight_deliveries(row.get(25).toString());
+				w.setInnight_stops(row.get(26).toString());
+				w.setExtra_info(row.get(27).toString());
+				w.setTotal_deliveries(row.get(28).toString());
+				w.setTotal_pickups(row.get(29).toString());
+
+				try {
+					w.setEvening_hours_decimal(Double.parseDouble(row.get(11)
+							.toString()));
+					w.setNight_hours_decimal(Double.parseDouble(row.get(12)
+							.toString()));
+					w.setHours_total_decimal(Double.parseDouble(row.get(13)
+							.toString()));
+					w.setEffiency(Double.parseDouble(row.get(30).toString()));
+				} catch (Exception e) {
+					System.out.println("Räjähti");
+					break;
+				}
+
+				try {
+					date1 = dateFormat.parse(w.getDate());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+
+				if (date1.after(date)) {
+					workdays.add(w);
+
+				}
+
+			}
+		}
+
+		System.out.println("Haettava nimi: " + name);
+
+		int postnord = 0;
+		int bring = 0;
+		double avg = 0;
+		int count = 0;
+
+		List<Topten> driverAvg = new ArrayList<Topten>();
+
+		Topten driver = new Topten(null, 0, null);
+
+		System.out.println(workdays.size());
+		for (int i = 0; i < workdays.size(); i++) {
+			if (name.equalsIgnoreCase(workdays.get(i).getName().toString())) {
+				count++;
+				System.out.println("nimi löyty: " + count);
+				postnord = postnord
+						+ Integer.parseInt(workdays.get(i).getPostnord_total());
+				bring = bring
+						+ Integer.parseInt(workdays.get(i).getBring_total());
+				avg = avg + workdays.get(i).getEffiency();
+
+			}
+
+		}
+
+		if (count != 0) {
+			driver.setName(name);
+		}
+
+		avg = (postnord + bring) / avg;
+
+		driver.setEff(avg);
+
+		driverAvg.add(driver);
+
+		System.out.println(avg);
+
+		return driverAvg;
+	}
+
 }

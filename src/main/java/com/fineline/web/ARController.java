@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import com.fineline.domain.Topten;
-import com.fineline.domain.WorkDay;
 import com.fineline.service.GoogleUploader;
-import com.fineline.service.WorkDayDAO;
 import com.fineline.domain.WorkDay_GoogleSheets;
 import com.fineline.service.GoogleDataFetcher;
 import com.google.gdata.data.spreadsheet.Data;
@@ -35,10 +34,12 @@ public class ARController {
 	@RequestMapping(value = "/insert", method = RequestMethod.GET)
 	public void insertData() throws IOException, ServiceException{
 		
-		GoogleUploader google = new GoogleUploader();
+		GoogleUploader.perse();
+		/*GoogleUploader google = new GoogleUploader();
 		List<Data> datalist = new ArrayList<Data>();
+		System.out.println("lisäilyyn");
 		google.writeSomething(datalist);
-		
+		*/
 	}
 
 	@RequestMapping(value = "/listall", produces = "application/json", method = RequestMethod.GET)

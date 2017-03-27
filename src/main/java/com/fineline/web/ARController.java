@@ -61,7 +61,7 @@ public class ARController {
 		return avgDriver;
 	}
 	
-	@RequestMapping("/")
+	@RequestMapping("/restapi")
 	public String rest() {		
 		return "index";
 	}

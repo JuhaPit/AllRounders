@@ -77,7 +77,6 @@ public class ARController {
 	public String rest() {		
 		return "index";
 	}
-	
 
 	/*
 	 * @RequestMapping(value = "/workdays", produces = "application/json",

@@ -34,12 +34,7 @@ public class ARController {
 	@RequestMapping(value = "/insert", method = RequestMethod.GET)
 	public void insertData() throws IOException, ServiceException{
 		
-		GoogleUploader.perse();
-		/*GoogleUploader google = new GoogleUploader();
-		List<Data> datalist = new ArrayList<Data>();
-		System.out.println("lisäilyyn");
-		google.writeSomething(datalist);
-		*/
+		GoogleUploader.insert();
 	}
 
 	@RequestMapping(value = "/listall", produces = "application/json", method = RequestMethod.GET)

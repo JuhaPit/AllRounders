@@ -18,10 +18,16 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.BatchUpdateValuesRequest;
 import com.google.api.services.sheets.v4.model.BatchUpdateValuesResponse;
+import com.google.api.services.sheets.v4.model.Sheet;
+import com.google.api.services.sheets.v4.model.SheetProperties;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
+import com.google.gdata.data.spreadsheet.WorksheetFeed;
 import com.google.gdata.util.ServiceException;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
 
@@ -89,17 +95,18 @@ public class GoogleUploader {
 				.setApplicationName(APPLICATION_NAME).build();
 	}
 
-	public static void perse() throws IOException, ServiceException {
+	public static void insert() throws IOException, ServiceException {
 		// Build a new authorized API client service.
 		Sheets service = getSheetsService();
 
 		// Prints the names and majors of students in a sample spreadsheet:
 		String spreadsheetId = "1zxu-b-HG0Kp8aQwIisFWO786s65LkfF2Wo-uSZ1xp6I";
-		String range = "Form Responses 1!A2:T";
 
 		List<List<Object>> arrData = getData();
 
 		ValueRange oRange = new ValueRange();
+		int lastRow = findLastRow();
+		String range = "Form Responses 1!A" + (lastRow+1) + ":T";
 		oRange.setRange(range); // I NEED THE NUMBER OF THE LAST ROW
 		oRange.setValues(arrData);
 
@@ -117,20 +124,28 @@ public class GoogleUploader {
 	public static List<List<Object>> getData() {
 
 		List<Object> data1 = new ArrayList<Object>();
-		data1.add("jagadeesh");
-		data1.add("jagadeesh");
-		data1.add("jagadeesh");
-
-		List<Object> data2 = new ArrayList<Object>();
-		data2.add("jagadeesh");
-		data2.add("jagadeesh");
-		data2.add("jagadeesh");
+		data1.add("test");
+		data1.add("test");
+		data1.add("test");
 
 		List<List<Object>> data = new ArrayList<List<Object>>();
 		data.add(data1);
-		data.add(data2);
 
 		return data;
 	}
+	
+	public static int findLastRow() throws IOException{
+		
+		Sheets service = getSheetsService();
 
+		String spreadsheetId = "1zxu-b-HG0Kp8aQwIisFWO786s65LkfF2Wo-uSZ1xp6I";
+		String range = "Form Responses 1!A2:T";
+		ValueRange response = service.spreadsheets().values()
+				.get(spreadsheetId, range).execute();
+		List<List<Object>> values = response.getValues();
+		int size = values.size();
+		return size+1;
+		
+	}
+	
 }

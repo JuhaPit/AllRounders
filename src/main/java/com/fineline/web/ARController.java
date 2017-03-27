@@ -1,6 +1,9 @@
 package com.fineline.web;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fineline.domain.Topten;
 import com.fineline.domain.WorkDay_GoogleSheets;
@@ -19,8 +23,10 @@ public class ARController {
 	/*
 	 * @Inject WorkDayDAO workdaydao;
 	 */
+
 	@RequestMapping(value = "/top", produces = "application/json", method = RequestMethod.GET)
 	public List<Topten> topSeven() throws IOException {
+
 		List<Topten> topSeven = GoogleDataFetcher.topten();
 		return topSeven;
 	}
@@ -65,4 +71,16 @@ public class ARController {
 	 * return new ResponseEntity<Object>(workdays, HttpStatus.OK); }
 	 */
 
+	/*
+	Todo lter
+	@RequestMapping(value = "/oauthEndpoint", method = RequestMethod.GET)
+	public void getOauthToken(@RequestParam(value = "code") String secret)
+			throws IOException {
+
+		System.out.println(secret);
+
+	}
+
+	// todo @Scheduled(fixedRate = 5000)
+	*/
 }

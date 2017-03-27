@@ -23,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -34,11 +33,14 @@ import com.fineline.domain.WorkDay_GoogleSheets;
 public class GoogleDataFetcher {
 
 	private static final String APPLICATION_NAME = "REAL DATA FEEDER";
+	private static final String SPREADSHEET_ID = "1YmlQACbcTwP6vTX0qAd45iL-Nw8hqv7rCTDLGQWtEX0";
+	private static final String SPREADSHEET_SHEET_AND_RANGE = "Näkymä 1!A3:AE";
+	private static final String CLIENT_GOD_MODE = "4/jVHvLP_1Y0TkzTKWOnm0u6anfm9u2GJEsfxL63wRXRo#";
 
 	/** Directory to store user credentials for this application. */
 
 	private static final java.io.File DATA_STORE_DIR = new java.io.File(
-			System.getProperty("user.dir"),
+			System.getProperty("user.home"),
 			".credentials/sheets.googleapis.com-java-quickstart");
 
 	/** Global instance of the {@link FileDataStoreFactory}. */
@@ -89,10 +91,19 @@ public class GoogleDataFetcher {
 				HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
 				.setDataStoreFactory(DATA_STORE_FACTORY)
 				.setAccessType("offline").setApprovalPrompt("auto").build();
+
+		flow.newTokenRequest(CLIENT_GOD_MODE);
+
+		// GoogleAuthorizationCodeTokenRequest newTokenRequest(String
+		// authorizationCode)
+
 		Credential credential = new AuthorizationCodeInstalledApp(flow,
 				new LocalServerReceiver()).authorize("user");
+
+		System.out.println(credential);
 		System.out.println("Credentials saved to "
 				+ DATA_STORE_DIR.getAbsolutePath());
+
 		return credential;
 	}
 
@@ -102,8 +113,11 @@ public class GoogleDataFetcher {
 	 * @return an authorized Sheets API client service
 	 * @throws IOException
 	 */
+
 	public static Sheets getSheetsService() throws IOException {
 		Credential credential = authorize();
+
+		System.out.println(credential.getAccessToken());
 		return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
 				.setApplicationName(APPLICATION_NAME).build();
 	}
@@ -114,8 +128,8 @@ public class GoogleDataFetcher {
 
 		// Prints the names and majors of students in a sample spreadsheet:
 		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-		String spreadsheetId = "1YmlQACbcTwP6vTX0qAd45iL-Nw8hqv7rCTDLGQWtEX0";
-		String range = "Näkymä 1!A3:AE";
+		String spreadsheetId = SPREADSHEET_ID;
+		String range = SPREADSHEET_SHEET_AND_RANGE;
 		ValueRange response = service.spreadsheets().values()
 				.get(spreadsheetId, range).execute();
 		List<List<Object>> values = response.getValues();
@@ -227,7 +241,7 @@ public class GoogleDataFetcher {
 
 		// Prints the names and majors of students in a sample spreadsheet:
 		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-		String spreadsheetId = "1YmlQACbcTwP6vTX0qAd45iL-Nw8hqv7rCTDLGQWtEX0";
+		String spreadsheetId = SPREADSHEET_ID;
 		String range = "Näkymä 1!A3:AE";
 		ValueRange response = service.spreadsheets().values()
 				.get(spreadsheetId, range).execute();
@@ -301,7 +315,7 @@ public class GoogleDataFetcher {
 
 		// Prints the names and majors of students in a sample spreadsheet:
 		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-		String spreadsheetId = "1YmlQACbcTwP6vTX0qAd45iL-Nw8hqv7rCTDLGQWtEX0";
+		String spreadsheetId = SPREADSHEET_ID;
 		String range = "Näkymä 1!A3:AE";
 		ValueRange response = service.spreadsheets().values()
 				.get(spreadsheetId, range).execute();
@@ -418,7 +432,7 @@ public class GoogleDataFetcher {
 
 		// Prints the names and majors of students in a sample spreadsheet:
 		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-		String spreadsheetId = "1YmlQACbcTwP6vTX0qAd45iL-Nw8hqv7rCTDLGQWtEX0";
+		String spreadsheetId = SPREADSHEET_ID;
 		String range = "Näkymä 1!A3:AE";
 		ValueRange response = service.spreadsheets().values()
 				.get(spreadsheetId, range).execute();
@@ -536,8 +550,8 @@ public class GoogleDataFetcher {
 
 		// Prints the names and majors of students in a sample spreadsheet:
 		// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-		String spreadsheetId = "1YmlQACbcTwP6vTX0qAd45iL-Nw8hqv7rCTDLGQWtEX0";
-		String range = "Näkymä 1!A3:AE";
+		String spreadsheetId = SPREADSHEET_ID;
+		String range = SPREADSHEET_SHEET_AND_RANGE;
 		ValueRange response = service.spreadsheets().values()
 				.get(spreadsheetId, range).execute();
 		List<List<Object>> values = response.getValues();

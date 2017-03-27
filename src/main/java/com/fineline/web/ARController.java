@@ -18,13 +18,13 @@ import com.fineline.domain.WorkDay_GoogleSheets;
 import com.fineline.service.GoogleDataFetcher;
 
 @Controller
-@ResponseBody
 public class ARController {
 	/*
 	 * @Inject WorkDayDAO workdaydao;
 	 */
 
 	@RequestMapping(value = "/top", produces = "application/json", method = RequestMethod.GET)
+	@ResponseBody
 	public List<Topten> topSeven() throws IOException {
 
 		List<Topten> topSeven = GoogleDataFetcher.topten();
@@ -32,18 +32,21 @@ public class ARController {
 	}
 
 	@RequestMapping(value = "/listall", produces = "application/json", method = RequestMethod.GET)
+	@ResponseBody
 	public List<WorkDay_GoogleSheets> listEverything() throws IOException {
 		List<WorkDay_GoogleSheets> listall = GoogleDataFetcher.listAll();
 		return listall;
 	}
 
 	@RequestMapping(value = "/tophel", produces = "application/json", method = RequestMethod.GET)
+	@ResponseBody
 	public List<Topten> topHelsinki() throws IOException {
 		List<Topten> tophel = GoogleDataFetcher.tophel();
 		return tophel;
 	}
 
 	@RequestMapping(value = "/topvan", produces = "application/json", method = RequestMethod.GET)
+	@ResponseBody
 	public List<Topten> topVantaa() throws IOException {
 		List<Topten> topvan = GoogleDataFetcher.topvan();
 		System.out.println();
@@ -57,6 +60,12 @@ public class ARController {
 		List<Topten> avgDriver = GoogleDataFetcher.driverAvg(name);
 		return avgDriver;
 	}
+	
+	@RequestMapping("/")
+	public String rest() {		
+		return "index";
+	}
+	
 
 	/*
 	 * @RequestMapping(value = "/workdays", produces = "application/json",

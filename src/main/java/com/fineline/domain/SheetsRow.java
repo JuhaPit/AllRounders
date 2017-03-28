@@ -5,22 +5,22 @@ public class SheetsRow {
 	private String timeStamp;
 	private String kuljettaja;
 	private String auto;
-	private String aloitusKm;
+	private int aloitusKm;
 	private String aloitusAika;
 	private String lopetusAika;
 	private String tauot;
-	private String lopetusKm;
+	private int lopetusKm;
 	private String reitti;
-	private String pJaot;
-	private String pNoudot;
-	private String pUnknown;
-	private String pYhteensa;
-	private String bJaot;
-	private String bNoudot;
-	private String bDhl;
-	private String bYhteensa;
-	private String iKollit;
-	private String iStopit;
+	private int pJaot;
+	private int pNoudot;
+	private int pUnknown;
+	private int pYhteensa;
+	private int bJaot;
+	private int bNoudot;
+	private int bDhl;
+	private int bYhteensa;
+	private int iKollit;
+	private int iStopit;
 	private String lisatiedot;
 	
 	
@@ -30,11 +30,10 @@ public class SheetsRow {
 
 
 	public SheetsRow(String timeStamp, String kuljettaja, String auto,
-			String aloitusKm, String aloitusAika, String lopetusAika,
-			String tauot, String lopetusKm, String reitti, String pJaot,
-			String pNoudot, String pUnknown, String pYhteensa, String bJaot,
-			String bNoudot, String bDhl, String bYhteensa, String iKollit,
-			String iStopit, String lisatiedot) {
+			int aloitusKm, String aloitusAika, String lopetusAika,
+			String tauot, int lopetusKm, String reitti, int pJaot, int pNoudot,
+			int pUnknown, int pYhteensa, int bJaot, int bNoudot, int bDhl,
+			int bYhteensa, int iKollit, int iStopit, String lisatiedot) {
 		super();
 		this.timeStamp = timeStamp;
 		this.kuljettaja = kuljettaja;
@@ -89,12 +88,12 @@ public class SheetsRow {
 	}
 
 
-	public String getAloitusKm() {
+	public int getAloitusKm() {
 		return aloitusKm;
 	}
 
 
-	public void setAloitusKm(String aloitusKm) {
+	public void setAloitusKm(int aloitusKm) {
 		this.aloitusKm = aloitusKm;
 	}
 
@@ -129,12 +128,12 @@ public class SheetsRow {
 	}
 
 
-	public String getLopetusKm() {
+	public int getLopetusKm() {
 		return lopetusKm;
 	}
 
 
-	public void setLopetusKm(String lopetusKm) {
+	public void setLopetusKm(int lopetusKm) {
 		this.lopetusKm = lopetusKm;
 	}
 
@@ -149,102 +148,102 @@ public class SheetsRow {
 	}
 
 
-	public String getpJaot() {
+	public int getpJaot() {
 		return pJaot;
 	}
 
 
-	public void setpJaot(String pJaot) {
+	public void setpJaot(int pJaot) {
 		this.pJaot = pJaot;
 	}
 
 
-	public String getpNoudot() {
+	public int getpNoudot() {
 		return pNoudot;
 	}
 
 
-	public void setpNoudot(String pNoudot) {
+	public void setpNoudot(int pNoudot) {
 		this.pNoudot = pNoudot;
 	}
 
 
-	public String getpUnknown() {
+	public int getpUnknown() {
 		return pUnknown;
 	}
 
 
-	public void setpUnknown(String pUnknown) {
+	public void setpUnknown(int pUnknown) {
 		this.pUnknown = pUnknown;
 	}
 
 
-	public String getpYhteensa() {
+	public int getpYhteensa() {
 		return pYhteensa;
 	}
 
 
-	public void setpYhteensa(String pYhteensa) {
+	public void setpYhteensa(int pYhteensa) {
 		this.pYhteensa = pYhteensa;
 	}
 
 
-	public String getbJaot() {
+	public int getbJaot() {
 		return bJaot;
 	}
 
 
-	public void setbJaot(String bJaot) {
+	public void setbJaot(int bJaot) {
 		this.bJaot = bJaot;
 	}
 
 
-	public String getbNoudot() {
+	public int getbNoudot() {
 		return bNoudot;
 	}
 
 
-	public void setbNoudot(String bNoudot) {
+	public void setbNoudot(int bNoudot) {
 		this.bNoudot = bNoudot;
 	}
 
 
-	public String getbDhl() {
+	public int getbDhl() {
 		return bDhl;
 	}
 
 
-	public void setbDhl(String bDhl) {
+	public void setbDhl(int bDhl) {
 		this.bDhl = bDhl;
 	}
 
 
-	public String getbYhteensa() {
+	public int getbYhteensa() {
 		return bYhteensa;
 	}
 
 
-	public void setbYhteensa(String bYhteensa) {
+	public void setbYhteensa(int bYhteensa) {
 		this.bYhteensa = bYhteensa;
 	}
 
 
-	public String getiKollit() {
+	public int getiKollit() {
 		return iKollit;
 	}
 
 
-	public void setiKollit(String iKollit) {
+	public void setiKollit(int iKollit) {
 		this.iKollit = iKollit;
 	}
 
 
-	public String getiStopit() {
+	public int getiStopit() {
 		return iStopit;
 	}
 
 
-	public void setiStopit(String iStopit) {
+	public void setiStopit(int iStopit) {
 		this.iStopit = iStopit;
 	}
 
@@ -274,7 +273,4 @@ public class SheetsRow {
 	}
 	
 	
-	
-	
-
 }

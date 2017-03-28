@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fineline.domain.SheetsRow;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -95,14 +96,14 @@ public class GoogleUploader {
 				.setApplicationName(APPLICATION_NAME).build();
 	}
 
-	public static void insert() throws IOException, ServiceException {
+	public static void insert(SheetsRow row) throws IOException, ServiceException {
 		// Build a new authorized API client service.
 		Sheets service = getSheetsService();
 
 		// Prints the names and majors of students in a sample spreadsheet:
 		String spreadsheetId = "1zxu-b-HG0Kp8aQwIisFWO786s65LkfF2Wo-uSZ1xp6I";
 
-		List<List<Object>> arrData = getData();
+		List<List<Object>> arrData = getData(row);
 
 		ValueRange oRange = new ValueRange();
 		int lastRow = findLastRow();
@@ -121,13 +122,30 @@ public class GoogleUploader {
 				.batchUpdate(spreadsheetId, oRequest).execute();
 	}
 
-	public static List<List<Object>> getData() {
+	public static List<List<Object>> getData(SheetsRow row) {
 
 		List<Object> data1 = new ArrayList<Object>();
-		data1.add("test");
-		data1.add("test");
-		data1.add("test");
-
+		data1.add(row.getTimeStamp());
+		data1.add(row.getKuljettaja());
+		data1.add(row.getAuto());
+		data1.add(row.getAloitusKm());
+		data1.add(row.getAloitusAika());
+		data1.add(row.getLopetusAika());
+		data1.add(row.getTauot());
+		data1.add(row.getLopetusKm());
+		data1.add(row.getReitti());
+		data1.add(row.getpJaot());
+		data1.add(row.getpNoudot());
+		data1.add(row.getpUnknown());
+		data1.add(row.getpYhteensa());
+		data1.add(row.getbJaot());
+		data1.add(row.getbNoudot());
+		data1.add(row.getbDhl());
+		data1.add(row.getbYhteensa());
+		data1.add(row.getiKollit());
+		data1.add(row.getiStopit());
+		data1.add(row.getLisatiedot());
+		
 		List<List<Object>> data = new ArrayList<List<Object>>();
 		data.add(data1);
 

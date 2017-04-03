@@ -22,7 +22,7 @@
 <div class="divTableRow">
 <div class="divTableCell">GET</div>
 <div class="divTableCell">/top</div>
-<div class="divTableCell">JSON-Object with top 7 drivers { name: "name", eff: 0.00, date: "01-01-1970" }</div>
+<div class="divTableCell">JSON-Object with top 7 drivers <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
 <div class="divTableCell">200 OK</div>
 <div class="divTableCell">Empty Body</div>
 <div class="divTableCell">Returns TOP 7 drivers best runs (Both Vantaa + Helsinki)</div>
@@ -30,7 +30,7 @@
 <div class="divTableRow">
 <div class="divTableCell">GET</div>
 <div class="divTableCell">/topvan</div>
-<div class="divTableCell">JSON-Object with top 7 drivers in Vantaa { name: "name", eff: 0.00, date: "01-01-1970" }</div>
+<div class="divTableCell">JSON-Object with top 7 drivers in Vantaa <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
 <div class="divTableCell">200 OK</div>
 <div class="divTableCell">Empty Body</div>
 <div class="divTableCell">Returns TOP 7 drivers best runs in Vantaa</div>
@@ -38,7 +38,7 @@
 <div class="divTableRow">
 <div class="divTableCell">GET</div>
 <div class="divTableCell">/tophel</div>
-<div class="divTableCell">JSON-Object with top 7 drivers in Helsinki { name: "name", eff: 0.00, date: "01-01-1970" }</div>
+<div class="divTableCell">JSON-Object with top 7 drivers in Helsinki <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
 <div class="divTableCell">200 OK</div>
 <div class="divTableCell">Empty Body</div>
 <div class="divTableCell">Returns TOP 7 drivers best runs in Helsinki</div>
@@ -62,7 +62,7 @@
 <div class="divTableRow">
 <div class="divTableCell">POST</div>
 <div class="divTableCell">/insert</div>
-<div class="divTableCell">Inserts a row to Google Sheets, formed on the basis of given object. Example: {
+<div class="divTableCell">Inserts a row to Google Sheets, formed on the basis of given object. Example: <pre>{
 	"timeStamp" : "3/1/2017 11:55:24",
 	"kuljettaja" : "Oskari",
 	"auto" : "BSS-555",
@@ -82,9 +82,8 @@
 	"bYhteensa" : 11,
 	"iKollit" : 0,
 	"iStopit" : 0,
-	"lisatiedot" : "Testi"
-	
-}</div>
+	"lisatiedot" : "Testi"	
+}</pre></div>
 <div class="divTableCell">200 OK</div>
 <div class="divTableCell">Empty Body</div>
 <div class="divTableCell">Inserts the given object as a row to the Sheet (at the moment, to the offline Sheet)</div>

@@ -1,41 +1,32 @@
 package com.fineline.web;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
-
-
-
 
 import com.fineline.domain.SheetsRow;
 import com.fineline.domain.Topten;
 import com.fineline.service.GoogleUploader;
 import com.fineline.domain.WorkDay_GoogleSheets;
 import com.fineline.service.GoogleDataFetcher;
-import com.google.gdata.data.spreadsheet.Data;
 import com.google.gdata.util.ServiceException;
 
+@CrossOrigin
 @Controller
 public class ARController {
 	/*
 	 * @Inject WorkDayDAO workdaydao;
 	 */
-
+	
 	@RequestMapping(value = "/top", produces = "application/json", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Topten> topSeven() throws IOException {
@@ -85,6 +76,11 @@ public class ARController {
 	
 	@RequestMapping("/restapi")
 	public String rest() {		
+		return "index";
+	}
+	
+	@RequestMapping("/")
+	public String restapi() {		
 		return "index";
 	}
 

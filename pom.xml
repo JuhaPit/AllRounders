@@ -79,9 +79,9 @@
 			<version>1.20.0</version>
 		</dependency>
 		<dependency>
-    		<groupId>com.google.gdata</groupId>
-    		<artifactId>core</artifactId>
-    		<version>1.47.1</version>
+			<groupId>com.google.gdata</groupId>
+			<artifactId>core</artifactId>
+			<version>1.47.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client-jetty -->
 		<dependency>
@@ -89,19 +89,18 @@
 			<artifactId>google-oauth-client-jetty</artifactId>
 			<version>1.22.0</version>
 		</dependency>
-<!--  
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
---> 
-<!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-oauth2 -->
-<dependency>
-    <groupId>com.google.apis</groupId>
-    <artifactId>google-api-services-oauth2</artifactId>
-    <version>v2-rev124-1.22.0</version>
-</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-oauth2 -->
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-oauth2</artifactId>
+			<version>v2-rev124-1.22.0</version>
+		</dependency>
+
 
 
 

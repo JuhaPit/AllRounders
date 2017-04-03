@@ -243,7 +243,7 @@ public class GoogleDataFetcher {
 		Sheets service = getSheetsService();
 
 		String spreadsheetId = SPREADSHEET_ID;
-		String range = "SPREADSHEET_SHEET_AND_RANGE";
+		String range = SPREADSHEET_SHEET_AND_RANGE;
 		ValueRange response = service.spreadsheets().values()
 				.get(spreadsheetId, range).execute();
 		List<List<Object>> values = response.getValues();

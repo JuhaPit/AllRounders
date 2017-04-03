@@ -432,7 +432,7 @@ public class GoogleDataFetcher {
 
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
 				if (row.get(COLUMN_DATE).toString().trim().length() == 0 || row.get(COLUMN_NAME).toString().length() == 0
-						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0 || row.get(COLUMN_POSTNORD_TOTAL).toString().length() == 0) {
+						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
 
 					break;
 				}

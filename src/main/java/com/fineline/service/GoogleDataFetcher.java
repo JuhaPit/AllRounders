@@ -184,7 +184,7 @@ public class GoogleDataFetcher {
 			for (List row : values) {
 
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(COLUMN_DATE).toString().length() == 0
+				if (row.get(COLUMN_DATE).toString().trim().length() == 0
 						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
 					break;
 				}
@@ -257,8 +257,9 @@ public class GoogleDataFetcher {
 			for (List row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(COLUMN_DATE).toString().length() == 0
-						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
+				if (row.get(COLUMN_DATE).toString().trim().length() == 0 || row.get(COLUMN_NAME).toString().length() == 0
+						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0 || row.get(COLUMN_POSTNORD_TOTAL).toString().length() == 0) {
+
 					break;
 				}
 				w.setDate(row.get(COLUMN_DATE).toString());
@@ -344,8 +345,8 @@ public class GoogleDataFetcher {
 			for (List row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(COLUMN_DATE).toString().length() == 0
-						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
+				if (row.get(COLUMN_DATE).toString().trim().length() == 0
+						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0 || row.get(COLUMN_EFFICIENCY).toString().isEmpty()) {
 					break;
 				}
 				w.setDate(row.get(COLUMN_DATE).toString());
@@ -395,7 +396,9 @@ public class GoogleDataFetcher {
 			}
 		}
 
-		tophel = tophel.subList(0, 7);
+		if (tophel.size() > 6) {
+			tophel = tophel.subList(0, 7);
+		}
 
 		return tophel;
 	}
@@ -426,9 +429,11 @@ public class GoogleDataFetcher {
 			System.out.println("");
 			for (List row : values) {
 
+
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(COLUMN_DATE).toString().length() == 0
-						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
+				if (row.get(COLUMN_DATE).toString().trim().length() == 0 || row.get(COLUMN_NAME).toString().length() == 0
+						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0 || row.get(COLUMN_POSTNORD_TOTAL).toString().length() == 0) {
+
 					break;
 				}
 				w.setDate(row.get(COLUMN_DATE).toString());
@@ -511,10 +516,12 @@ public class GoogleDataFetcher {
 		} else {
 			System.out.println("");
 			for (List row : values) {
+				
 
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(COLUMN_DATE).toString().length() == 0
-						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
+				if (row.get(COLUMN_DATE).toString().trim().length() == 0 || row.get(COLUMN_NAME).toString().length() == 0
+						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0 || row.get(COLUMN_POSTNORD_TOTAL).toString().length() == 0) {
+
 					break;
 				}
 				w.setDate(row.get(COLUMN_DATE).toString());

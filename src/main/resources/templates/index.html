@@ -8,7 +8,26 @@
 
 </head>
 <body>
+<h1>AllRounders Rest Api Documentation</h1>
 
+<div class="divTable">
+<div class="divTableBody">
+<div class="divTableRow">Note, ALL request must have following header key-value pair
+</div>
+
+<div class="divTableRow">
+<div class="divTableCell">Key</div>
+<div class="divTableCell">Value</div>
+</div>
+<div class="divTableRow">
+<div class="divTableCell">Secret</div>
+<div class="divTableCell">B55AF471FFE583FEB96EF0788EBF9FCBA678592F70CB8508F5D43ED64A1C0E90B598C627389A913776EEE1AFEFEDE85AB82CB8AD46DF7AE3CE24072196738A9B</div>
+</div>
+</div>
+</div>
+<pre>
+
+</pre>
 <div class="divTable" style="border: 1px solid #000;" >
 <div class="divTableBody">
 <div class="divTableRow">
@@ -24,7 +43,7 @@
 <div class="divTableCell">/top</div>
 <div class="divTableCell">JSON-Object with top 7 drivers <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
 <div class="divTableCell">200 OK</div>
-<div class="divTableCell">Empty Body</div>
+<div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Returns TOP 7 drivers best runs (Both Vantaa + Helsinki)</div>
 </div>
 <div class="divTableRow">
@@ -32,7 +51,7 @@
 <div class="divTableCell">/topvan</div>
 <div class="divTableCell">JSON-Object with top 7 drivers in Vantaa <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
 <div class="divTableCell">200 OK</div>
-<div class="divTableCell">Empty Body</div>
+<div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Returns TOP 7 drivers best runs in Vantaa</div>
 </div>
 <div class="divTableRow">
@@ -40,15 +59,15 @@
 <div class="divTableCell">/tophel</div>
 <div class="divTableCell">JSON-Object with top 7 drivers in Helsinki <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
 <div class="divTableCell">200 OK</div>
-<div class="divTableCell">Empty Body</div>
+<div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Returns TOP 7 drivers best runs in Helsinki</div>
 </div>
 <div class="divTableRow">
 <div class="divTableCell">GET</div>
 <div class="divTableCell">/avg/{driverName}</div>
-<div class="divTableCell">JSON-Object with Driver name, eff and date. </div>
+<div class="divTableCell">JSON-Object with Driver name, eff and date.<pre>{ "name": "miikka", "eff": 6.223145230592952, "date": null }</pre></div>
 <div class="divTableCell">200 OK</div>
-<div class="divTableCell">Empty AVG JSON-Object</div>
+<div class="divTableCell">Empty AVG JSON-Object OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Returns drivers effiency from past month</div>
 </div>
 <div class="divTableRow">
@@ -56,7 +75,7 @@
 <div class="divTableCell">/listall</div>
 <div class="divTableCell">Returns all google sheets data as JSON-Object</div>
 <div class="divTableCell">200 OK</div>
-<div class="divTableCell">Empty Body</div>
+<div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Returns all google sheets data</div>
 </div>
 <div class="divTableRow">
@@ -85,13 +104,12 @@
 	"lisatiedot" : "Testi"	
 }</pre></div>
 <div class="divTableCell">200 OK</div>
-<div class="divTableCell">Empty Body</div>
+<div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Inserts the given object as a row to the Sheet (at the moment, to the offline Sheet)</div>
 </div>
 </div>
 </div>
 <!-- DivTable.com -->
-
 </body>
 </html>
 

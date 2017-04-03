@@ -1,7 +1,10 @@
 package com.fineline.service;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import com.fineline.domain.SheetsRow;
@@ -19,6 +22,10 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.BatchUpdateValuesRequest;
 import com.google.api.services.sheets.v4.model.BatchUpdateValuesResponse;
+import com.google.api.services.sheets.v4.model.CellData;
+import com.google.api.services.sheets.v4.model.CellFormat;
+import com.google.api.services.sheets.v4.model.ExtendedValue;
+import com.google.api.services.sheets.v4.model.NumberFormat;
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.SheetProperties;
 import com.google.api.services.sheets.v4.model.ValueRange;
@@ -30,6 +37,13 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.MutableDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 
 
@@ -96,7 +110,7 @@ public class GoogleUploader {
 				.setApplicationName(APPLICATION_NAME).build();
 	}
 
-	public static void insert(SheetsRow row) throws IOException, ServiceException {
+	public static void insert(SheetsRow row) throws IOException, ServiceException, ParseException {
 		// Build a new authorized API client service.
 		Sheets service = getSheetsService();
 
@@ -122,16 +136,32 @@ public class GoogleUploader {
 				.batchUpdate(spreadsheetId, oRequest).execute();
 	}
 
-	public static List<List<Object>> getData(SheetsRow row) {
+	public static List<List<Object>> getData(SheetsRow row) throws ParseException {
 
 		List<Object> data1 = new ArrayList<Object>();
-		data1.add(row.getTimeStamp());
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("M/d/yyy HH:mm:ss");
+		
+		String pvv = row.getTimeStamp();
+		Date date = formatter.parse(pvv);
+		double epochDate = getEpochDate(date);
+		
+		String startTime = row.getAloitusAika();
+		double aloitusAika = convertTime(startTime);
+		
+		String endTime = row.getLopetusAika();
+		double lopetusAika = convertTime(endTime);
+		
+		String breaks = row.getTauot();
+		double tauot = convertTime(breaks);
+		
+		data1.add(epochDate);
 		data1.add(row.getKuljettaja());
 		data1.add(row.getAuto());
 		data1.add(row.getAloitusKm());
-		data1.add(row.getAloitusAika());
-		data1.add(row.getLopetusAika());
-		data1.add(row.getTauot());
+		data1.add(aloitusAika);
+		data1.add(lopetusAika);
+		data1.add(tauot);
 		data1.add(row.getLopetusKm());
 		data1.add(row.getReitti());
 		data1.add(row.getpJaot());
@@ -165,5 +195,33 @@ public class GoogleUploader {
 		return size+1;
 		
 	}
+	
+	// Precomputed difference between the Unix epoch and the Sheets epoch.
+	private static final long SHEETS_EPOCH_DIFFERENCE = -2209161600000L;
+
+	public static double getEpochDate(Date date)
+	{
+	    long millisSinceUnixEpoch = date.getTime();
+	    long millisSinceSheetsEpoch = millisSinceUnixEpoch - SHEETS_EPOCH_DIFFERENCE;
+	    return millisSinceSheetsEpoch / (double) TimeUnit.DAYS.toMillis(1);
+	}
+	
+	public static double convertTime(String time){
+		
+		String[] parts = time.split(":");
+		
+		double hours = Double.parseDouble(parts[0]);
+		double minutes = Double.parseDouble(parts[1]);
+		
+		double hoursInMinutes = hours * 60;
+		
+		double total = hoursInMinutes + minutes;
+		
+		double hoursAsDecimal = total / 1440;
+		
+		return hoursAsDecimal;
+	}
+	
+	
 	
 }

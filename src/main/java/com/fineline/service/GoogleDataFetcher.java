@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.fineline.domain.Deliveries;
 import com.fineline.domain.Topten;
 import com.fineline.domain.WorkDay_GoogleSheets;
 
@@ -73,14 +74,16 @@ public class GoogleDataFetcher {
 
 	/** Directory to store user credentials for this application. */
 
-	private static final java.io.File DATA_STORE_DIR = new java.io.File(System.getProperty("user.home"),
+	private static final java.io.File DATA_STORE_DIR = new java.io.File(
+			System.getProperty("user.home"),
 			".credentials/sheets.googleapis.com-java-quickstart");
 
 	/** Global instance of the {@link FileDataStoreFactory}. */
 	private static FileDataStoreFactory DATA_STORE_FACTORY;
 
 	/** Global instance of the JSON factory. */
-	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+	private static final JsonFactory JSON_FACTORY = JacksonFactory
+			.getDefaultInstance();
 
 	/** Global instance of the HTTP transport. */
 	private static HttpTransport HTTP_TRANSPORT;
@@ -91,7 +94,8 @@ public class GoogleDataFetcher {
 	 * If modifying these scopes, delete your previously saved credentials at
 	 * ~/.credentials/sheets.googleapis.com-java-quickstart
 	 */
-	private static final List<String> SCOPES = Arrays.asList(SheetsScopes.SPREADSHEETS_READONLY);
+	private static final List<String> SCOPES = Arrays
+			.asList(SheetsScopes.SPREADSHEETS_READONLY);
 
 	static {
 		try {
@@ -112,23 +116,28 @@ public class GoogleDataFetcher {
 	public static Credential authorize() throws IOException {
 
 		// Load client secrets.
-		InputStream in = GoogleDataFetcher.class.getResourceAsStream("/client_secret.json");
-		GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+		InputStream in = GoogleDataFetcher.class
+				.getResourceAsStream("/client_secret.json");
+		GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(
+				JSON_FACTORY, new InputStreamReader(in));
 
 		// Build flow and trigger user authorization request.
-		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY,
-				clientSecrets, SCOPES).setDataStoreFactory(DATA_STORE_FACTORY).setAccessType("offline")
-						.setApprovalPrompt("auto").build();
+		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+				HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+				.setDataStoreFactory(DATA_STORE_FACTORY)
+				.setAccessType("offline").setApprovalPrompt("auto").build();
 
 		flow.newTokenRequest(CLIENT_GOD_MODE);
 
 		// GoogleAuthorizationCodeTokenRequest newTokenRequest(String
 		// authorizationCode)
 
-		Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+		Credential credential = new AuthorizationCodeInstalledApp(flow,
+				new LocalServerReceiver()).authorize("user");
 
 		System.out.println(credential);
-		System.out.println("Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
+		System.out.println("Credentials saved to "
+				+ DATA_STORE_DIR.getAbsolutePath());
 
 		return credential;
 	}
@@ -144,8 +153,8 @@ public class GoogleDataFetcher {
 		Credential credential = authorize();
 
 		System.out.println(credential.getAccessToken());
-		return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME)
-				.build();
+		return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+				.setApplicationName(APPLICATION_NAME).build();
 	}
 
 	public static List<Topten> topten() throws IOException {
@@ -154,7 +163,8 @@ public class GoogleDataFetcher {
 
 		String spreadsheetId = SPREADSHEET_ID;
 		String range = SPREADSHEET_SHEET_AND_RANGE;
-		ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
+		ValueRange response = service.spreadsheets().values()
+				.get(spreadsheetId, range).execute();
 		List<List<Object>> values = response.getValues();
 
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -174,7 +184,7 @@ public class GoogleDataFetcher {
 			for (List row : values) {
 
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(COLUMN_DATE).toString().length() == 0
+				if (row.get(COLUMN_DATE).toString().trim().length() == 0
 						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
 					break;
 				}
@@ -183,7 +193,8 @@ public class GoogleDataFetcher {
 
 				try {
 
-					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY).toString()));
+					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
+							.toString()));
 				} catch (Exception e) {
 					System.out.println("Räjähti");
 					break;
@@ -201,7 +212,8 @@ public class GoogleDataFetcher {
 			}
 		}
 
-		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency).reversed());
+		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency)
+				.reversed());
 
 		List<String> names = new ArrayList<String>();
 
@@ -215,8 +227,8 @@ public class GoogleDataFetcher {
 			if (!names.contains(new_name)) {
 
 				names.add(new_name);
-				Topten entry = new Topten(workdays.get(i).getName(), workdays.get(i).getEffiency(),
-						workdays.get(i).getDate());
+				Topten entry = new Topten(workdays.get(i).getName(), workdays
+						.get(i).getEffiency(), workdays.get(i).getDate());
 				topten.add(entry);
 			}
 		}
@@ -231,8 +243,9 @@ public class GoogleDataFetcher {
 		Sheets service = getSheetsService();
 
 		String spreadsheetId = SPREADSHEET_ID;
-		String range = "Näkymä 1!A3:AE";
-		ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
+		String range = SPREADSHEET_SHEET_AND_RANGE;
+		ValueRange response = service.spreadsheets().values()
+				.get(spreadsheetId, range).execute();
 		List<List<Object>> values = response.getValues();
 
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
@@ -244,8 +257,9 @@ public class GoogleDataFetcher {
 			for (List row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(COLUMN_DATE).toString().length() == 0
-						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
+				if (row.get(COLUMN_DATE).toString().trim().length() == 0 || row.get(COLUMN_NAME).toString().length() == 0
+						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0 || row.get(COLUMN_POSTNORD_TOTAL).toString().length() == 0) {
+
 					break;
 				}
 				w.setDate(row.get(COLUMN_DATE).toString());
@@ -262,25 +276,35 @@ public class GoogleDataFetcher {
 				w.setKm_total(row.get(COLUMN_KM_TOTAL).toString());
 				w.setBasic_hours(row.get(COLUMN_BASIC_HOURS).toString());
 				w.setRoute(row.get(COLUMN_ROUTE).toString());
-				w.setPostnord_deliveries(row.get(COLUMN_POSTNORD_DELIVERIES).toString());
-				w.setPostnord_pickups(row.get(COLUMN_POSTNORD_PICKUPS).toString());
-				w.setPostnord_unknown(row.get(COLUMN_POSTNORD_UNKNOWN).toString());
+				w.setPostnord_deliveries(row.get(COLUMN_POSTNORD_DELIVERIES)
+						.toString());
+				w.setPostnord_pickups(row.get(COLUMN_POSTNORD_PICKUPS)
+						.toString());
+				w.setPostnord_unknown(row.get(COLUMN_POSTNORD_UNKNOWN)
+						.toString());
 				w.setPostnord_total(row.get(COLUMN_POSTNORD_TOTAL).toString());
-				w.setBring_deliveries(row.get(COLUMN_BRING_DELIVERIES).toString());
+				w.setBring_deliveries(row.get(COLUMN_BRING_DELIVERIES)
+						.toString());
 				w.setBring_pickups(row.get(COLUMN_BRING_PICKUPS).toString());
 				w.setBring_dhl_returns(row.get(COLUMN_DHL_RETURNS).toString());
 				w.setBring_total(row.get(COLUMN_BRING_TOTAL).toString());
-				w.setInnight_deliveries(row.get(COLUMN_INNIGHT_DELIVERIES).toString());
+				w.setInnight_deliveries(row.get(COLUMN_INNIGHT_DELIVERIES)
+						.toString());
 				w.setInnight_stops(row.get(COLUMN_INNIGHT_STOPS).toString());
 				w.setExtra_info(row.get(COLUMN_EXTRA_INFO).toString());
-				w.setTotal_deliveries(row.get(COLUMN_TOTAL_DELIVERIES).toString());
+				w.setTotal_deliveries(row.get(COLUMN_TOTAL_DELIVERIES)
+						.toString());
 				w.setTotal_pickups(row.get(COLUMN_TOTAL_PICKUPS).toString());
 
 				try {
-					w.setEvening_hours_decimal(Double.parseDouble(row.get(COLUMN_EVENING_HOURS_DECIMAL).toString()));
-					w.setNight_hours_decimal(Double.parseDouble(row.get(COLUMN_NIGHT_HOURS_DECIMAL).toString()));
-					w.setHours_total_decimal(Double.parseDouble(row.get(COLUMN_HOURS_TOTAL_DECIMAL).toString()));
-					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY).toString()));
+					w.setEvening_hours_decimal(Double.parseDouble(row.get(
+							COLUMN_EVENING_HOURS_DECIMAL).toString()));
+					w.setNight_hours_decimal(Double.parseDouble(row.get(
+							COLUMN_NIGHT_HOURS_DECIMAL).toString()));
+					w.setHours_total_decimal(Double.parseDouble(row.get(
+							COLUMN_HOURS_TOTAL_DECIMAL).toString()));
+					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
+							.toString()));
 				} catch (Exception e) {
 					System.out.println("Räjähti");
 					break;
@@ -299,7 +323,8 @@ public class GoogleDataFetcher {
 
 		String spreadsheetId = SPREADSHEET_ID;
 		String range = SPREADSHEET_SHEET_AND_RANGE;
-		ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
+		ValueRange response = service.spreadsheets().values()
+				.get(spreadsheetId, range).execute();
 		List<List<Object>> values = response.getValues();
 
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
@@ -320,15 +345,16 @@ public class GoogleDataFetcher {
 			for (List row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(COLUMN_DATE).toString().length() == 0
-						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
+				if (row.get(COLUMN_DATE).toString().trim().length() == 0
+						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0 || row.get(COLUMN_EFFICIENCY).toString().isEmpty()) {
 					break;
 				}
 				w.setDate(row.get(COLUMN_DATE).toString());
 				w.setName(row.get(COLUMN_NAME).toString());
 				w.setRoute(row.get(COLUMN_ROUTE).toString());
 				try {
-					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY).toString()));
+					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
+							.toString()));
 				} catch (Exception e) {
 					System.out.println("Räjähti");
 					break;
@@ -349,7 +375,8 @@ public class GoogleDataFetcher {
 			}
 		}
 
-		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency).reversed());
+		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency)
+				.reversed());
 
 		List<String> names = new ArrayList<String>();
 
@@ -363,13 +390,15 @@ public class GoogleDataFetcher {
 			if (!names.contains(new_name)) {
 
 				names.add(new_name);
-				Topten entry = new Topten(workdays.get(i).getName(), workdays.get(i).getEffiency(),
-						workdays.get(i).getDate());
+				Topten entry = new Topten(workdays.get(i).getName(), workdays
+						.get(i).getEffiency(), workdays.get(i).getDate());
 				tophel.add(entry);
 			}
 		}
 
-		tophel = tophel.subList(0, 7);
+		if (tophel.size() > 6) {
+			tophel = tophel.subList(0, 7);
+		}
 
 		return tophel;
 	}
@@ -380,7 +409,8 @@ public class GoogleDataFetcher {
 
 		String spreadsheetId = SPREADSHEET_ID;
 		String range = SPREADSHEET_SHEET_AND_RANGE;
-		ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
+		ValueRange response = service.spreadsheets().values()
+				.get(spreadsheetId, range).execute();
 		List<List<Object>> values = response.getValues();
 
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
@@ -399,9 +429,11 @@ public class GoogleDataFetcher {
 			System.out.println("");
 			for (List row : values) {
 
+
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(COLUMN_DATE).toString().length() == 0
-						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
+				if (row.get(COLUMN_DATE).toString().trim().length() == 0 || row.get(COLUMN_NAME).toString().length() == 0
+						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0 || row.get(COLUMN_POSTNORD_TOTAL).toString().length() == 0) {
+
 					break;
 				}
 				w.setDate(row.get(COLUMN_DATE).toString());
@@ -409,7 +441,8 @@ public class GoogleDataFetcher {
 				w.setRoute(row.get(COLUMN_ROUTE).toString());
 
 				try {
-					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY).toString()));
+					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
+							.toString()));
 				} catch (Exception e) {
 					System.out.println("Räjähti");
 					break;
@@ -430,7 +463,8 @@ public class GoogleDataFetcher {
 			}
 		}
 
-		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency).reversed());
+		workdays.sort(Comparator.comparing(WorkDay_GoogleSheets::getEffiency)
+				.reversed());
 
 		List<String> names = new ArrayList<String>();
 
@@ -444,8 +478,8 @@ public class GoogleDataFetcher {
 			if (!names.contains(new_name)) {
 
 				names.add(new_name);
-				Topten entry = new Topten(workdays.get(i).getName(), workdays.get(i).getEffiency(),
-						workdays.get(i).getDate());
+				Topten entry = new Topten(workdays.get(i).getName(), workdays
+						.get(i).getEffiency(), workdays.get(i).getDate());
 				topvan.add(entry);
 			}
 		}
@@ -463,7 +497,8 @@ public class GoogleDataFetcher {
 
 		String spreadsheetId = SPREADSHEET_ID;
 		String range = SPREADSHEET_SHEET_AND_RANGE;
-		ValueRange response = service.spreadsheets().values().get(spreadsheetId, range).execute();
+		ValueRange response = service.spreadsheets().values()
+				.get(spreadsheetId, range).execute();
 		List<List<Object>> values = response.getValues();
 
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
@@ -481,17 +516,22 @@ public class GoogleDataFetcher {
 		} else {
 			System.out.println("");
 			for (List row : values) {
+				
 
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
-				if (row.get(COLUMN_DATE).toString().length() == 0
-						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
+				if (row.get(COLUMN_DATE).toString().trim().length() == 0 || row.get(COLUMN_NAME).toString().length() == 0
+						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0 || row.get(COLUMN_POSTNORD_TOTAL).toString().length() == 0) {
+
 					break;
 				}
 				w.setDate(row.get(COLUMN_DATE).toString());
 				w.setName(row.get(COLUMN_NAME).toString());
+				w.setPostnord_total(row.get(COLUMN_POSTNORD_TOTAL).toString());
+				w.setBring_total(row.get(COLUMN_BRING_TOTAL).toString());
 
 				try {
-					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY).toString()));
+					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
+							.toString()));
 				} catch (Exception e) {
 					System.out.println("Räjähti");
 					break;
@@ -523,8 +563,10 @@ public class GoogleDataFetcher {
 		for (int i = 0; i < workdays.size(); i++) {
 			if (name.equalsIgnoreCase(workdays.get(i).getName().toString())) {
 				count++;
-				postnord = postnord + Integer.parseInt(workdays.get(i).getPostnord_total());
-				bring = bring + Integer.parseInt(workdays.get(i).getBring_total());
+				postnord = postnord
+						+ Integer.parseInt(workdays.get(i).getPostnord_total());
+				bring = bring
+						+ Integer.parseInt(workdays.get(i).getBring_total());
 				avg = avg + workdays.get(i).getEffiency();
 
 			}
@@ -538,8 +580,88 @@ public class GoogleDataFetcher {
 		avg = (postnord + bring) / avg;
 		driver.setEff(avg);
 		driverAvg.add(driver);
-
 		return driverAvg;
+	}
+
+	public static Deliveries getAllDeliverycount() throws IOException {
+
+		Sheets service = getSheetsService();
+
+		String spreadsheetId = SPREADSHEET_ID;
+		String range = SPREADSHEET_SHEET_AND_RANGE;
+		ValueRange response = service.spreadsheets().values()
+				.get(spreadsheetId, range).execute();
+		List<List<Object>> values = response.getValues();
+
+		int postnord_deliveries = 0, postnord_pickups = 0, postnord_unknown = 0, postnord_total = 0;
+		int bring_deliveries = 0, bring_pickups = 0, dhl_returns = 0, bring_total = 0;
+		int innight_deliveries = 0, innight_stops = 0;
+		int total_deliveries = 0, total_pickups = 0;
+
+		if (values == null || values.size() == 0) {
+			System.out.println("No data found.");
+		} else {
+			System.out.println("");
+			for (List row : values) {
+				// Print columns A and AE, which correspond to indices 0 and 30.
+
+				if (row.get(COLUMN_DATE).toString().length() == 0
+						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
+					break;
+				}
+
+				try {
+
+					postnord_deliveries = postnord_deliveries
+							+ Integer.parseInt((String) row
+									.get(COLUMN_POSTNORD_DELIVERIES));
+					postnord_pickups = postnord_pickups
+							+ Integer.parseInt((String) row
+									.get(COLUMN_POSTNORD_PICKUPS));
+					postnord_unknown = postnord_unknown
+							+ Integer.parseInt((String) row
+									.get(COLUMN_POSTNORD_UNKNOWN));
+					postnord_total = postnord_total
+							+ Integer.parseInt((String) row
+									.get(COLUMN_POSTNORD_TOTAL));
+
+					bring_deliveries = bring_deliveries
+							+ Integer.parseInt((String) row
+									.get(COLUMN_BRING_DELIVERIES));
+					bring_pickups = bring_pickups
+							+ Integer.parseInt((String) row
+									.get(COLUMN_BRING_PICKUPS));
+					dhl_returns = dhl_returns
+							+ Integer.parseInt((String) row
+									.get(COLUMN_DHL_RETURNS));
+					bring_total = bring_total
+							+ Integer.parseInt((String) row
+									.get(COLUMN_BRING_TOTAL));
+
+					innight_deliveries = innight_deliveries
+							+ Integer.parseInt((String) row
+									.get(COLUMN_INNIGHT_DELIVERIES));
+					innight_stops = innight_stops
+							+ Integer.parseInt((String) row
+									.get(COLUMN_INNIGHT_STOPS));
+
+				} catch (Exception e) {
+					System.out.println("Räjähti");
+					break;
+				}
+
+			}
+		}
+
+		total_deliveries = postnord_total + bring_total + innight_deliveries;
+		total_pickups = postnord_pickups + bring_pickups;
+
+		Deliveries d = new Deliveries(postnord_total, postnord_pickups,
+				postnord_deliveries, postnord_unknown, bring_deliveries,
+				bring_total, bring_pickups, dhl_returns, innight_deliveries,
+				innight_stops, total_deliveries, total_pickups);
+
+		return d;
 	}
 
 }

@@ -50,6 +50,7 @@ import org.joda.time.format.DateTimeFormatter;
 public class GoogleUploader {
 
 	private static final String APPLICATION_NAME = "REAL DATA FEEDER";
+	private static final String CLIENT_GOD_MODE = "4/yoGolvyeAkIfVqspGBOHuGbPlGo49bUx0YK9p6M1m8s#";
 	private static final java.io.File DATA_STORE_DIR = new java.io.File(
 			System.getProperty("user.home"),
 			".credentials/sheets.googleapis.com-java-quickstart.json");
@@ -82,6 +83,7 @@ public class GoogleUploader {
 				HTTP_TRANSPORT, JSON_FACTORY, GoogleUploader.getClientSecret(),
 				SCOPES).setDataStoreFactory(DATA_STORE_FACTORY)
 				.setAccessType("offline").build();
+		flow.newTokenRequest(CLIENT_GOD_MODE);
 		Credential credential = new AuthorizationCodeInstalledApp(flow,
 				new LocalServerReceiver()).authorize("user");
 		System.out.println("Credentials saved to "

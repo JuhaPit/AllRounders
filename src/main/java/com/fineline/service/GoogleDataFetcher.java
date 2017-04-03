@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.fineline.domain.Deliveries;
 import com.fineline.domain.Topten;
 import com.fineline.domain.WorkDay_GoogleSheets;
 
@@ -242,7 +243,7 @@ public class GoogleDataFetcher {
 		Sheets service = getSheetsService();
 
 		String spreadsheetId = SPREADSHEET_ID;
-		String range = "Näkymä 1!A3:AE";
+		String range = "SPREADSHEET_SHEET_AND_RANGE";
 		ValueRange response = service.spreadsheets().values()
 				.get(spreadsheetId, range).execute();
 		List<List<Object>> values = response.getValues();
@@ -573,6 +574,87 @@ public class GoogleDataFetcher {
 		driver.setEff(avg);
 		driverAvg.add(driver);
 		return driverAvg;
+	}
+
+	public static Deliveries getAllDeliverycount() throws IOException {
+
+		Sheets service = getSheetsService();
+
+		String spreadsheetId = SPREADSHEET_ID;
+		String range = SPREADSHEET_SHEET_AND_RANGE;
+		ValueRange response = service.spreadsheets().values()
+				.get(spreadsheetId, range).execute();
+		List<List<Object>> values = response.getValues();
+
+		int postnord_deliveries = 0, postnord_pickups = 0, postnord_unknown = 0, postnord_total = 0;
+		int bring_deliveries = 0, bring_pickups = 0, dhl_returns = 0, bring_total = 0;
+		int innight_deliveries = 0, innight_stops = 0;
+		int total_deliveries = 0, total_pickups = 0;
+
+		if (values == null || values.size() == 0) {
+			System.out.println("No data found.");
+		} else {
+			System.out.println("");
+			for (List row : values) {
+				// Print columns A and AE, which correspond to indices 0 and 30.
+
+				if (row.get(COLUMN_DATE).toString().length() == 0
+						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
+					break;
+				}
+
+				try {
+
+					postnord_deliveries = postnord_deliveries
+							+ Integer.parseInt((String) row
+									.get(COLUMN_POSTNORD_DELIVERIES));
+					postnord_pickups = postnord_pickups
+							+ Integer.parseInt((String) row
+									.get(COLUMN_POSTNORD_PICKUPS));
+					postnord_unknown = postnord_unknown
+							+ Integer.parseInt((String) row
+									.get(COLUMN_POSTNORD_UNKNOWN));
+					postnord_total = postnord_total
+							+ Integer.parseInt((String) row
+									.get(COLUMN_POSTNORD_TOTAL));
+
+					bring_deliveries = bring_deliveries
+							+ Integer.parseInt((String) row
+									.get(COLUMN_BRING_DELIVERIES));
+					bring_pickups = bring_pickups
+							+ Integer.parseInt((String) row
+									.get(COLUMN_BRING_PICKUPS));
+					dhl_returns = dhl_returns
+							+ Integer.parseInt((String) row
+									.get(COLUMN_DHL_RETURNS));
+					bring_total = bring_total
+							+ Integer.parseInt((String) row
+									.get(COLUMN_BRING_TOTAL));
+
+					innight_deliveries = innight_deliveries
+							+ Integer.parseInt((String) row
+									.get(COLUMN_INNIGHT_DELIVERIES));
+					innight_stops = innight_stops
+							+ Integer.parseInt((String) row
+									.get(COLUMN_INNIGHT_STOPS));
+
+				} catch (Exception e) {
+					System.out.println("Räjähti");
+					break;
+				}
+
+			}
+		}
+
+		total_deliveries = postnord_total + bring_total + innight_deliveries;
+		total_pickups = postnord_pickups + bring_pickups;
+
+		Deliveries d = new Deliveries(postnord_total, postnord_pickups,
+				postnord_deliveries, postnord_unknown, bring_deliveries,
+				bring_total, bring_pickups, dhl_returns, innight_deliveries,
+				innight_stops, total_deliveries, total_pickups);
+
+		return d;
 	}
 
 }

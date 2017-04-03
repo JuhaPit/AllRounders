@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fineline.domain.Deliveries;
 import com.fineline.domain.SheetsRow;
 import com.fineline.domain.Topten;
 import com.fineline.service.GoogleUploader;
@@ -108,6 +109,22 @@ public class ARController {
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}
+	
+	@RequestMapping(value = "/deliveries", produces = "application/json", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<Object> getAllDeliveries(
+			@RequestHeader(value = "Secret") String secret_word)
+			throws IOException {
+
+		if (secret.equals(secret_word)) {
+			Deliveries d = GoogleDataFetcher.getAllDeliverycount();
+			return new ResponseEntity<Object>(d, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	
 
 	@RequestMapping("/restapi")
 	public String rest() {

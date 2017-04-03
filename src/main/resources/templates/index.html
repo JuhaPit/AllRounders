@@ -107,6 +107,27 @@
 <div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Inserts the given object as a row to the Sheet (at the moment, to the offline Sheet)</div>
 </div>
+<div class="divTableRow">
+<div class="divTableCell">GET</div>
+<div class="divTableCell">/deliveries</div>
+<div class="divTableCell">Returns all google sheets delivery data as JSON-Object<pre>{
+  "postnord_total": 795,
+  "postnord_pickups": 112,
+  "postnord_deliveries": 673,
+  "postnord_unknown": 15,
+  "bring_deliveries": 150,
+  "bring_total": 192,
+  "bring_pickups": 31,
+  "dhl_returns": 13,
+  "innight_deliveries": 318,
+  "innight_stops": 109,
+  "total": 1305,
+  "total_pickups": 143
+}</pre></div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
+<div class="divTableCell">Returns delivery count for all delivery types</div>
+</div>
 </div>
 </div>
 <!-- DivTable.com -->

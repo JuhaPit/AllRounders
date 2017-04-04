@@ -128,9 +128,48 @@
 <div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Returns delivery count for all delivery types</div>
 </div>
+
+<div class="divTableRow">
+<div class="divTableCell">GET</div>
+<div class="divTableCell">/debug/health</div>
+<div class="divTableCell">Returns server health<pre>{ "status": "UP" }</pre></div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">Server is on fire, send help</div>
+<div class="divTableCell">Displays server Health</div>
+</div>
+
+<div class="divTableRow">
+<div class="divTableCell">GET</div>
+<div class="divTableCell">/debug/trace</div>
+<div class="divTableCell">JSON object table with last 100 HTTP requests</div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">Not applicable here</div>
+<div class="divTableCell">Displays last 100 HTTP request (Limit can be raised if needed for debugging purposes)</div>
+</div>
+
+<div class="divTableRow">
+<div class="divTableCell">GET</div>
+<div class="divTableCell">/debug/mappings</div>
+<div class="divTableCell">JSON List of server endpoints</div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">Not applicable here</div>
+<div class="divTableCell">List all server endpoints</div>
+</div>
+
+<div class="divTableRow">
+<div class="divTableCell">GET</div>
+<div class="divTableCell">/debug/metrics</div>
+<div class="divTableCell">JSON Object of server metrics</div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">Not applicable here</div>
+<div class="divTableCell">Display server metrics</div>
 </div>
 </div>
-<!-- DivTable.com -->
+</div>
+
+
+
+
 </body>
 </html>
 

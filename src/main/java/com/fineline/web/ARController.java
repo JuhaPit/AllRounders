@@ -3,6 +3,7 @@ package com.fineline.web;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.fineline.domain.Deliveries;
 import com.fineline.domain.SheetsRow;
 import com.fineline.domain.Topten;
@@ -20,6 +22,7 @@ import com.fineline.service.GoogleUploader;
 import com.fineline.domain.WorkDay_GoogleSheets;
 import com.fineline.service.GoogleDataFetcher;
 import com.google.gdata.util.ServiceException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +35,8 @@ public class ARController {
 	// Key:Value pair for very simple authentication. SHA512 encrypted word.
 	private static String secret = "B55AF471FFE583FEB96EF0788EBF9FCBA678592F70CB8508F5D43ED64A1C0E90B598C627389A913776EEE1AFEFEDE85AB82CB8AD46DF7AE3CE24072196738A9B";
 
+	
+	
 	/*
 	 * Accepts GET request at endpoint /top, requires header with Secret word
 	 * 
@@ -191,6 +196,22 @@ public class ARController {
 		}
 	}
 
+	@RequestMapping(value = "/updateMotd", produces = "application/json", method = RequestMethod.POST)
+	@ResponseBody public ResponseEntity<Object> updateMotd(
+			@RequestHeader(value = "Secret") String secret_word, @RequestBody String message)
+			throws IOException {
+
+		if (secret.equals(secret_word)) {
+			System.setProperty("info.motd.message", message);
+			LOG.info("/updateMotd - Updated message of the day");
+			return new ResponseEntity<Object>(HttpStatus.OK);
+		} else {
+			LOG.debug("/updateMotd - Error setting new message of the day");
+			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	
 	@RequestMapping("/restapi")
 	public String rest() {
 		LOG.info("/restapi - Rest API");

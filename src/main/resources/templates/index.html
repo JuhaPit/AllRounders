@@ -128,6 +128,14 @@
 <div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Returns delivery count for all delivery types</div>
 </div>
+<div class="divTableRow">
+<div class="divTableCell">POST</div>
+<div class="divTableCell">/updateMotd</div>
+<div class="divTableCell">Updates message of the day, accepts string "enter your new message of the day here" on body. </div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
+<div class="divTableCell">Updates message of the day</div>
+</div>
 </div>
 </div>
 
@@ -188,6 +196,9 @@
 <div class="divTableCell">GET</div>
 <div class="divTableCell">/debug/info</div>
 <div class="divTableCell"><pre>{
+  "motd": {
+    "message": "new message of the day"
+  },
   "app": {
     "version": "0.0.1",
     "name": "AllRounders REST"

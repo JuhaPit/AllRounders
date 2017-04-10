@@ -146,6 +146,9 @@ public class GoogleUploader {
 		String breaks = row.getTauot();
 		double tauot = convertTime(breaks);
 		
+		int pYhteensa = row.getpJaot() + row.getpNoudot() + row.getpUnknown();
+		int bYhteensa = row.getbJaot() + row.getbNoudot() + row.getbDhl();
+		
 		data1.add(epochDate);
 		data1.add(row.getKuljettaja());
 		data1.add(row.getAuto());
@@ -158,11 +161,11 @@ public class GoogleUploader {
 		data1.add(row.getpJaot());
 		data1.add(row.getpNoudot());
 		data1.add(row.getpUnknown());
-		data1.add(row.getpYhteensa());
+		data1.add(pYhteensa);
 		data1.add(row.getbJaot());
 		data1.add(row.getbNoudot());
 		data1.add(row.getbDhl());
-		data1.add(row.getbYhteensa());
+		data1.add(bYhteensa);
 		data1.add(row.getiKollit());
 		data1.add(row.getiStopit());
 		data1.add(row.getLisatiedot());

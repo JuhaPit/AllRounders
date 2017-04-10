@@ -190,12 +190,15 @@ table tr td {
 	}
 table {
 	border-spacing: 0;
-	border-collapse: collapse
+	border-collapse: collapse;
+	height: 35vh;
+	width: 35vw;
 }
 
 td, th {
 	padding: 1%;
 	border-bottom: 1px solid #ddd;
+	font-size: 5vh;
 }
 	/*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 @media print {

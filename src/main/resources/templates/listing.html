@@ -62,6 +62,21 @@
 	
 	fetchTopHel(){
 		console.log('fetchTopHel');
+		$.ajaxSetup({
+		  headers: {
+				"Secret":"B55AF471FFE583FEB96EF0788EBF9FCBA678592F70CB8508F5D43ED64A1C0E90B598C627389A913776EEE1AFEFEDE85AB82CB8AD46DF7AE3CE24072196738A9B",
+			}
+		});
+		$.getJSON('http://proto440.haaga-helia.fi/AllRounders/tophel', 
+			function(data) { 
+				console.log("Successfully fetched top7 hel"); 
+				this.setState({
+					RankingHel: data
+				})
+console.log("Helsinki: " + this.state.RankingHel[0].name)
+			}.bind(this)
+		);
+
 		
 	}
 	
@@ -78,7 +93,7 @@
 		//return(<ul>{this.state.RankingTop7.map(function(user, i){return <li>{user.name}</li>})}</ul>);
 		return(<table>
 			{this.state.RankingTop7.map(function(user, i){
-				return <tr><td>{user.name}</td><td>{user.eff}</td></tr>
+				return <tr><td>{i+1}.</td><td>{user.name}</td><td>{user.eff}</td></tr>
 			})}
 		</table>);
 	}

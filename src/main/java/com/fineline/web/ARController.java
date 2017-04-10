@@ -20,10 +20,14 @@ import com.fineline.service.GoogleUploader;
 import com.fineline.domain.WorkDay_GoogleSheets;
 import com.fineline.service.GoogleDataFetcher;
 import com.google.gdata.util.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @CrossOrigin
 @Controller
 public class ARController {
+	static final Logger LOG = LoggerFactory.getLogger(ARController.class);
 
 	// Key:Value pair for very simple authentication. SHA512 encrypted word.
 	private static String secret = "B55AF471FFE583FEB96EF0788EBF9FCBA678592F70CB8508F5D43ED64A1C0E90B598C627389A913776EEE1AFEFEDE85AB82CB8AD46DF7AE3CE24072196738A9B";
@@ -41,8 +45,10 @@ public class ARController {
 
 		if (secret.equals(secret_word)) {
 			List<Topten> topSeven = GoogleDataFetcher.topten();
+			LOG.info("/top - Fetching topSeven");
 			return new ResponseEntity<Object>(topSeven, HttpStatus.OK);
 		} else {
+			LOG.debug("/top - Error fetching topSeven");
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}
@@ -65,8 +71,10 @@ public class ARController {
 			throws IOException, ServiceException, ParseException {
 		if (secret.equals(secret_word)) {
 			GoogleUploader.insert(row);
+			LOG.info("/insert - Inserting row to sheet");
 			return new ResponseEntity<Object>(HttpStatus.OK);
 		} else {
+			LOG.debug("/insert - Error inserting row to sheet");
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}
@@ -86,8 +94,10 @@ public class ARController {
 
 		if (secret.equals(secret_word)) {
 			List<WorkDay_GoogleSheets> listall = GoogleDataFetcher.listAll();
+			LOG.info("/listall - Fetching list of all workdays");
 			return new ResponseEntity<Object>(listall, HttpStatus.OK);
 		} else {
+			LOG.debug("/listall - Error fetching list of all workdays");
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}
@@ -106,8 +116,10 @@ public class ARController {
 
 		if (secret.equals(secret_word)) {
 			List<Topten> tophel = GoogleDataFetcher.tophel();
+			LOG.info("/tophel - Fetching top drivers for helsinki");
 			return new ResponseEntity<Object>(tophel, HttpStatus.OK);
 		} else {
+			LOG.debug("/tophel - Error fetching top drivers for helsinki");
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}
@@ -126,8 +138,10 @@ public class ARController {
 
 		if (secret.equals(secret_word)) {
 			List<Topten> topvan = GoogleDataFetcher.topvan();
+			LOG.info("/topvan - Fetching top drivers for vantaa");
 			return new ResponseEntity<Object>(topvan, HttpStatus.OK);
 		} else {
+			LOG.debug("/topvan - Error fetching top drivers for vantaa");
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}
@@ -146,9 +160,10 @@ public class ARController {
 
 		if (secret.equals(secret_word)) {
 			List<Topten> avgDriver = GoogleDataFetcher.driverAvg(name);
+			LOG.info("/avg/{name} - Fetching driver specific avarage statistic");
 			return new ResponseEntity<Object>(avgDriver, HttpStatus.OK);
 		} else {
-
+			LOG.debug("/avg/{name} - Error fetching driver specific avarage statistic");
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}
@@ -168,19 +183,23 @@ public class ARController {
 
 		if (secret.equals(secret_word)) {
 			Deliveries d = GoogleDataFetcher.getAllDeliverycount();
+			LOG.info("/deliveries - Fetching all deliveries");
 			return new ResponseEntity<Object>(d, HttpStatus.OK);
 		} else {
+			LOG.debug("/deliveries - Error fetching all deliveries");
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}
 
 	@RequestMapping("/restapi")
 	public String rest() {
+		LOG.info("/restapi - Rest API");
 		return "index";
 	}
 
 	@RequestMapping("/")
 	public String restapi() {
+		LOG.info("/ - Index");
 		return "index";
 	}
 

@@ -1,5 +1,6 @@
 package com.fineline.service;
 
+import com.fineline.web.ARController;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -19,6 +20,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InsertData {
     /** Application name. */
@@ -57,6 +61,8 @@ public class InsertData {
         }
     }
 
+	static final Logger LOG = LoggerFactory.getLogger(ARController.class);
+    
     /**
      * Creates an authorized Credential object.
      * @return an authorized Credential object.
@@ -78,8 +84,7 @@ public class InsertData {
                 .build();
         Credential credential = new AuthorizationCodeInstalledApp(
             flow, new LocalServerReceiver()).authorize("user");
-        System.out.println(
-                "Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
+        LOG.info("Credential authorize - Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
         return credential;
     }
 
@@ -108,12 +113,11 @@ public class InsertData {
             .execute();
         List<List<Object>> values = response.getValues();
         if (values == null || values.size() == 0) {
-            System.out.println("No data found.");
+        	LOG.info("InsertData - main - No data found");
         } else {
-          System.out.println("Name, Major");
           for (List row : values) {
             // Print columns A and E, which correspond to indices 0 and 4.
-            System.out.printf("%s, %s\n", row.get(0), row.get(4));
+          	LOG.info("InsertData - main - " + "%s, %s\n", row.get(0), row.get(4));
           }
         }
     }

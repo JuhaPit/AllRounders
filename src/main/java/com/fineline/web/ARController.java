@@ -160,10 +160,10 @@ public class ARController {
 
 		if (secret.equals(secret_word)) {
 			List<Topten> avgDriver = GoogleDataFetcher.driverAvg(name);
-			LOG.info("/avg/{name} - Fetching driver specific avarage statistic");
+			LOG.info("/avg/{name} - Fetching driver specific avarage statistic for " + name );
 			return new ResponseEntity<Object>(avgDriver, HttpStatus.OK);
 		} else {
-			LOG.debug("/avg/{name} - Error fetching driver specific avarage statistic");
+			LOG.debug("/avg/{name} - Error fetching driver specific avarage statistic  for " + name );
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}

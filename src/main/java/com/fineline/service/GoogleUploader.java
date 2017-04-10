@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fineline.domain.SheetsRow;
+import com.fineline.web.ARController;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -44,6 +45,8 @@ import org.joda.time.Days;
 import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 
@@ -71,6 +74,7 @@ public class GoogleUploader {
 		}
 	}
 
+	static final Logger LOG = LoggerFactory.getLogger(ARController.class);
 	/**
 	 * Creates an authorized Credential object.
 	 *
@@ -86,8 +90,7 @@ public class GoogleUploader {
 		flow.newTokenRequest(CLIENT_GOD_MODE);
 		Credential credential = new AuthorizationCodeInstalledApp(flow,
 				new LocalServerReceiver()).authorize("user");
-		System.out.println("Credentials saved to "
-				+ DATA_STORE_DIR.getAbsolutePath());
+		LOG.info("Credential authorize - Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
 		return credential;
 	}
 

@@ -27,9 +27,13 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fineline.domain.Deliveries;
 import com.fineline.domain.Topten;
 import com.fineline.domain.WorkDay_GoogleSheets;
+import com.fineline.web.ARController;
 
 public class GoogleDataFetcher {
 
@@ -106,6 +110,8 @@ public class GoogleDataFetcher {
 			System.exit(1);
 		}
 	}
+	
+	static final Logger LOG = LoggerFactory.getLogger(ARController.class);
 
 	/**
 	 * Creates an authorized Credential object.
@@ -135,10 +141,8 @@ public class GoogleDataFetcher {
 		Credential credential = new AuthorizationCodeInstalledApp(flow,
 				new LocalServerReceiver()).authorize("user");
 
-		System.out.println(credential);
-		System.out.println("Credentials saved to "
-				+ DATA_STORE_DIR.getAbsolutePath());
-
+		LOG.info("Credential authorize - credential: " + credential);
+		LOG.info("Credential authorize - Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
 		return credential;
 	}
 
@@ -178,9 +182,8 @@ public class GoogleDataFetcher {
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
 
 		if (values == null || values.size() == 0) {
-			System.out.println("No data found.");
+			LOG.info("GoogleDataFetcher - topten - No data found");
 		} else {
-			System.out.println("");
 			for (List row : values) {
 
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
@@ -196,7 +199,7 @@ public class GoogleDataFetcher {
 					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
 							.toString()));
 				} catch (Exception e) {
-					System.out.println("Räjähti");
+					LOG.debug("GoogleDataFetcher - topten - Exploded, tried to get COLUMN_EFFIENCY");
 					break;
 				}
 
@@ -234,7 +237,7 @@ public class GoogleDataFetcher {
 		}
 
 		topten = topten.subList(0, 7);
-		System.out.println(topten.size());
+		LOG.info("GoogleDataFetcher - topten - Topten size: " + topten.size());
 		return topten;
 	}
 
@@ -251,9 +254,8 @@ public class GoogleDataFetcher {
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
 
 		if (values == null || values.size() == 0) {
-			System.out.println("No data found.");
+			LOG.info("GoogleDataFetcher - listAll - No data found");
 		} else {
-			System.out.println("");
 			for (List row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
@@ -306,7 +308,7 @@ public class GoogleDataFetcher {
 					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
 							.toString()));
 				} catch (Exception e) {
-					System.out.println("Räjähti");
+					LOG.debug("GoogleDataFetcher - topten - Exploded, tried to get COLUMN_EVENING_HOURS_DECIMAL, COLUMN_NIGHT_HOURS_DECIMAL or COLUMN_HOURS_TOTAL_DECIMAL");
 					break;
 				}
 
@@ -336,12 +338,11 @@ public class GoogleDataFetcher {
 		cal.setTime(date);
 		cal.add(Calendar.MONTH, -1);
 		date = cal.getTime();
-		System.out.println(dateFormat.format(date));
+		LOG.info("GoogleDataFetcher - tophel - Formatted date: " + dateFormat.format(date));
 
 		if (values == null || values.size() == 0) {
-			System.out.println("No data found.");
+			LOG.info("GoogleDataFetcher - tophel - No data found");
 		} else {
-			System.out.println("");
 			for (List row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
@@ -356,7 +357,7 @@ public class GoogleDataFetcher {
 					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
 							.toString()));
 				} catch (Exception e) {
-					System.out.println("Räjähti");
+					LOG.debug("GoogleDataFetcher - tophel - Exploded, tried to get COLUMN_EFFICIENCY");
 					break;
 				}
 				if (w.getRoute().contains("HEL")) {
@@ -424,9 +425,8 @@ public class GoogleDataFetcher {
 		date = cal.getTime();
 
 		if (values == null || values.size() == 0) {
-			System.out.println("No data found.");
+			LOG.info("GoogleDataFetcher - topvan - No data found");
 		} else {
-			System.out.println("");
 			for (List row : values) {
 
 
@@ -444,7 +444,7 @@ public class GoogleDataFetcher {
 					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
 							.toString()));
 				} catch (Exception e) {
-					System.out.println("Räjähti");
+					LOG.debug("GoogleDataFetcher - topvan - Exploded, tried to get COLUMN_EFFICIENCY");
 					break;
 				}
 				if (w.getRoute().contains("VAN")) {
@@ -512,12 +512,9 @@ public class GoogleDataFetcher {
 		date = cal.getTime();
 
 		if (values == null || values.size() == 0) {
-			System.out.println("No data found.");
+			LOG.info("GoogleDataFetcher - driverAvg - No data found");
 		} else {
-			System.out.println("");
 			for (List row : values) {
-				
-
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
 				if (row.get(COLUMN_DATE).toString().trim().length() == 0 || row.get(COLUMN_NAME).toString().length() == 0
 						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0 || row.get(COLUMN_POSTNORD_TOTAL).toString().length() == 0) {
@@ -533,7 +530,7 @@ public class GoogleDataFetcher {
 					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
 							.toString()));
 				} catch (Exception e) {
-					System.out.println("Räjähti");
+					LOG.debug("GoogleDataFetcher - driverAvg - Exploded, tried to get COLUMN_EFFICIENCY");
 					break;
 				}
 
@@ -599,7 +596,7 @@ public class GoogleDataFetcher {
 		int total_deliveries = 0, total_pickups = 0;
 
 		if (values == null || values.size() == 0) {
-			System.out.println("No data found.");
+			LOG.info("GoogleDataFetcher - getAllDeliverycount - No data found");
 		} else {
 			System.out.println("");
 			for (List row : values) {
@@ -646,7 +643,7 @@ public class GoogleDataFetcher {
 									.get(COLUMN_INNIGHT_STOPS));
 
 				} catch (Exception e) {
-					System.out.println("Räjähti");
+					LOG.debug("GoogleDataFetcher - driverAvg - Exploded, tried to get COLUMN_POSTNORD_DELIVERIES, COLUMN_POSTNORD_PICKUPS, COLUMN_POSTNORD_UNKNOWN, COLUMN_POSTNORD_TOTAL, COLUMN_BRING_DELIVERIES, COLUMN_BRING_PICKUPS, COLUMN_DHL_RETURNS, COLUMN_BRING_TOTAL, COLUMN_INNIGHT_DELIVERIES or COLUMN_INNIGHT_STOPS");
 					break;
 				}
 

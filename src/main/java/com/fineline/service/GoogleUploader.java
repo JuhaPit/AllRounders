@@ -74,7 +74,7 @@ public class GoogleUploader {
 		}
 	}
 
-	static final Logger LOG = LoggerFactory.getLogger(ARController.class);
+	static final Logger LOG = LoggerFactory.getLogger(GoogleUploader.class);
 	/**
 	 * Creates an authorized Credential object.
 	 *

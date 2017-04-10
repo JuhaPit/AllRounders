@@ -111,7 +111,7 @@ public class GoogleDataFetcher {
 		}
 	}
 	
-	static final Logger LOG = LoggerFactory.getLogger(ARController.class);
+	static final Logger LOG = LoggerFactory.getLogger(GoogleDataFetcher.class);
 
 	/**
 	 * Creates an authorized Credential object.

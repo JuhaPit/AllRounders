@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>All Rounders - Ranking all</title>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}"
+	href="../static/css/bootstrap.css" />
+</head>
+
+<body>
+    <div class='container'>
+        <div id='root'></div>
+	</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<script type="text/babel">
+	class App extends React.Component {
+	
+	
+	constructor() {
+		
+		super();
+		
+		this.state = {
+				
+				RankingTop7: [],
+				RankingHel: [],
+				RankingVan: []
+				
+		}
+					
+	}
+
+	componentWillMount() {
+		console.log('componentWillMount')
+		this.fetchTopSeven();
+		this.fetchTopHel();
+		this.fetchTopVan();
+	}
+	
+	fetchTopSeven(){
+		
+		console.log('fetchTopSeven');
+		$.ajaxSetup({
+		  headers: {
+				"Secret":"B55AF471FFE583FEB96EF0788EBF9FCBA678592F70CB8508F5D43ED64A1C0E90B598C627389A913776EEE1AFEFEDE85AB82CB8AD46DF7AE3CE24072196738A9B",
+			}
+		});
+		$.getJSON('http://proto440.haaga-helia.fi/AllRounders/top', 
+			function(data) { 
+				console.log("Successfully fetched top7"); 
+				this.setState({
+					RankingTop7: data
+				})
+			}.bind(this)
+		);
+		
+	}
+	
+	fetchTopHel(){
+		console.log('fetchTopHel');
+		
+	}
+	
+	fetchTopVan(){
+		console.log('fetchTopVan');
+		
+	}
+	
+	
+	render(){
+		
+		console.log('render');
+		//return (<div>{JSON.stringify(this.state.RankingTop7)}</div>);
+		//return(<ul>{this.state.RankingTop7.map(function(user, i){return <li>{user.name}</li>})}</ul>);
+		return(<table>
+			{this.state.RankingTop7.map(function(user, i){
+				return <tr><td>{user.name}</td><td>{user.eff}</td></tr>
+			})}
+		</table>);
+	}
+	
+}
+ReactDOM.render(<App/>, document.getElementById('root'));
+
+	</script>
+</body>
+</html>

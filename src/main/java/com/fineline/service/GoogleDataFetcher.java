@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
 import com.fineline.domain.Deliveries;
 import com.fineline.domain.Topten;
 import com.fineline.domain.WorkDay_GoogleSheets;
-import com.fineline.web.ARController;
 
 public class GoogleDataFetcher {
 
@@ -184,7 +183,7 @@ public class GoogleDataFetcher {
 		if (values == null || values.size() == 0) {
 			LOG.info("GoogleDataFetcher - topten - No data found");
 		} else {
-			for (List row : values) {
+			for (List<?> row : values) {
 
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
 				if (row.get(COLUMN_DATE).toString().trim().length() == 0
@@ -256,7 +255,7 @@ public class GoogleDataFetcher {
 		if (values == null || values.size() == 0) {
 			LOG.info("GoogleDataFetcher - listAll - No data found");
 		} else {
-			for (List row : values) {
+			for (List<?> row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
 				if (row.get(COLUMN_DATE).toString().trim().length() == 0 || row.get(COLUMN_NAME).toString().length() == 0
@@ -343,7 +342,7 @@ public class GoogleDataFetcher {
 		if (values == null || values.size() == 0) {
 			LOG.info("GoogleDataFetcher - tophel - No data found");
 		} else {
-			for (List row : values) {
+			for (List<?> row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
 				if (row.get(COLUMN_DATE).toString().trim().length() == 0
@@ -427,7 +426,7 @@ public class GoogleDataFetcher {
 		if (values == null || values.size() == 0) {
 			LOG.info("GoogleDataFetcher - topvan - No data found");
 		} else {
-			for (List row : values) {
+			for (List<?> row : values) {
 
 
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
@@ -514,7 +513,7 @@ public class GoogleDataFetcher {
 		if (values == null || values.size() == 0) {
 			LOG.info("GoogleDataFetcher - driverAvg - No data found");
 		} else {
-			for (List row : values) {
+			for (List<?> row : values) {
 				WorkDay_GoogleSheets w = new WorkDay_GoogleSheets();
 				if (row.get(COLUMN_DATE).toString().trim().length() == 0 || row.get(COLUMN_NAME).toString().length() == 0
 						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0 || row.get(COLUMN_POSTNORD_TOTAL).toString().length() == 0) {
@@ -599,7 +598,7 @@ public class GoogleDataFetcher {
 			LOG.info("GoogleDataFetcher - getAllDeliverycount - No data found");
 		} else {
 			System.out.println("");
-			for (List row : values) {
+			for (List<?> row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
 
 				if (row.get(COLUMN_DATE).toString().length() == 0

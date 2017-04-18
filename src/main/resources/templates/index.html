@@ -150,7 +150,38 @@
 <div class="divTableCell">Returns message of the day and when it was last updated</div>
 </div>
 
+<div class="divTableRow">
+<div class="divTableCell"><b>GET</b></div>
+<div class="divTableCell">/sakko</div>
+<div class="divTableCell">Fetch current Sakko count <pre>{
+  "sakko_count": "1"
+}</pre></div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">401 Unauthorized or 400 Bad request</div>
+<div class="divTableCell">Gets current Sakko_count</div>
+</div>
 
+<div class="divTableRow">
+<div class="divTableCell"><b>PUT</b></div>
+<div class="divTableCell">/sakko</div>
+<div class="divTableCell">Add +1 to current sakko_count<pre>{
+  "sakko_count": "2"
+}</pre></div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">401 Unauthorized or 400 Bad request</div>
+<div class="divTableCell">Add one sakko to counter</div>
+</div>
+
+<div class="divTableRow">
+<div class="divTableCell"><b>DELETE</b></div>
+<div class="divTableCell">/sakko</div>
+<div class="divTableCell">Reset sakko counter <pre>{
+  "sakko_count": "0"
+}</pre></div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">401 Unauthorized or 400 Bad request</div>
+<div class="divTableCell">Reset sakko counter</div>
+</div>
 
 </div>
 

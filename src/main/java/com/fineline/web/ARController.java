@@ -1,10 +1,16 @@
 package com.fineline.web;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fineline.domain.Deliveries;
 import com.fineline.domain.Motd;
+import com.fineline.domain.Sakko;
 import com.fineline.domain.SheetsRow;
 import com.fineline.domain.Topten;
 import com.fineline.service.GoogleUploader;
@@ -34,7 +41,7 @@ import org.slf4j.LoggerFactory;
 @Controller
 public class ARController {
 	static final Logger LOG = LoggerFactory.getLogger(ARController.class);
-
+	
 	// Key:Value pair for very simple authentication. SHA512 encrypted word.
 	private static String secret = "B55AF471FFE583FEB96EF0788EBF9FCBA678592F70CB8508F5D43ED64A1C0E90B598C627389A913776EEE1AFEFEDE85AB82CB8AD46DF7AE3CE24072196738A9B";
 
@@ -236,6 +243,131 @@ public class ARController {
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}
+	
+	@RequestMapping(value = "/sakko", produces = "application/json", method = RequestMethod.GET)
+	@ResponseBody public ResponseEntity<Object> getSakot(
+			@RequestHeader(value = "Secret") String secret_word) throws IOException {
+
+		if (secret.equals(secret_word)) {
+			Sakko sssss = new Sakko();
+			Path path;
+			try {
+				path = Paths.get(getClass().getClassLoader()
+					      .getResource("sakko.txt").toURI());
+				 StringBuilder data = new StringBuilder();
+				    Stream<String> lines = Files.lines(path);
+				    lines.forEach(line -> data.append(line).append(""));
+				    lines.close();
+				    System.out.println("Sakko count: " +data);
+				    
+				    sssss.setSakko_count(data.toString());
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			LOG.info("/sakko - Fetched sakot");
+			return new ResponseEntity<Object>(sssss, HttpStatus.OK);
+		} else {
+			LOG.debug("/sakko - Error while fetching sakot");
+			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@RequestMapping(value = "/sakko", produces = "application/json", method = RequestMethod.PUT)
+	@ResponseBody public ResponseEntity<Object> putSakot(
+			@RequestHeader(value = "Secret") String secret_word) throws Exception {
+
+		if (secret.equals(secret_word)) {
+			Sakko sss = new Sakko();
+			Path path;
+			try {
+				
+				
+				path = Paths.get(getClass().getClassLoader()
+					      .getResource("sakko.txt").toURI());
+				 StringBuilder data = new StringBuilder();
+				    Stream<String> lines = Files.lines(path);
+				    lines.forEach(line -> data.append(line));
+				    lines.close();
+				    System.out.println(path.toString());
+				    
+				    System.out.println("Sakko count: " +data);
+				    
+				    String myString = data.toString();
+				    
+				    int new_sakko_count = Integer.parseInt(myString);
+				    new_sakko_count++;
+				    System.out.println(new_sakko_count);
+				    				    
+				    try {
+				    	FileWriter writer = new FileWriter(path.toString());
+				    	writer.write("" + new_sakko_count);
+			            writer.close();
+			            sss.setSakko_count("" +new_sakko_count);
+			        } catch (IOException e) {
+			            e.printStackTrace();
+			        }
+				    	
+				    
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+
+			LOG.info("/sakko - [PUT]Updated sakot");
+			return new ResponseEntity<Object>(sss, HttpStatus.OK);
+		} else {
+			LOG.debug("/sakko - [PUT]Error while fetching sakot");
+			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@RequestMapping(value = "/sakko", produces = "application/json", method = RequestMethod.DELETE)
+	@ResponseBody public ResponseEntity<Object> nollaaSakot(
+			@RequestHeader(value = "Secret") String secret_word) throws Exception {
+
+		if (secret.equals(secret_word)) {
+			
+			Path path;
+			Sakko ssss = new Sakko();
+			try {
+				
+				path = Paths.get(getClass().getClassLoader()
+					      .getResource("sakko.txt").toURI());
+				 StringBuilder data = new StringBuilder();
+				    Stream<String> lines = Files.lines(path);
+				    lines.forEach(line -> data.append(line));
+				    lines.close();
+				    System.out.println(path.toString());
+				    
+				    String myString = data.toString();
+				    
+				    int new_sakko_count = Integer.parseInt(myString);
+				    new_sakko_count++;
+				    System.out.println(new_sakko_count);
+				    				    
+				    try {
+				    	FileWriter writer = new FileWriter(path.toString());
+				    	writer.write("" + 0);
+			            writer.close();
+			            ssss.setSakko_count("" + 0);
+			        } catch (IOException e) {
+			            e.printStackTrace();
+			        }
+				    	
+				    
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+
+			LOG.info("/sakko - [DELETE] Set Sakko count to 0");
+			return new ResponseEntity<Object>(ssss, HttpStatus.OK);
+		} else {
+			LOG.debug("/sakko - [DELETE]Error while fetching sakot");
+			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
 	
 	
 	@RequestMapping("/restapi")

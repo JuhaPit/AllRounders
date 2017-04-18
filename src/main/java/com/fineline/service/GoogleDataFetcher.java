@@ -192,6 +192,7 @@ public class GoogleDataFetcher {
 				}
 				w.setDate(row.get(COLUMN_DATE).toString());
 				w.setName(row.get(COLUMN_NAME).toString());
+				w.setRoute(row.get(COLUMN_ROUTE).toString());
 
 				try {
 
@@ -230,7 +231,7 @@ public class GoogleDataFetcher {
 
 				names.add(new_name);
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
-						.get(i).getEffiency(), workdays.get(i).getDate());
+						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute());
 				topten.add(entry);
 			}
 		}
@@ -391,7 +392,7 @@ public class GoogleDataFetcher {
 
 				names.add(new_name);
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
-						.get(i).getEffiency(), workdays.get(i).getDate());
+						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute());
 				tophel.add(entry);
 			}
 		}
@@ -446,7 +447,7 @@ public class GoogleDataFetcher {
 					LOG.debug("GoogleDataFetcher - topvan - Exploded, tried to get COLUMN_EFFICIENCY");
 					break;
 				}
-				if (w.getRoute().contains("VAN")) {
+				if (w.getRoute().contains("VAN") || w.getRoute().contains("FISP")) {
 
 					try {
 						date1 = dateFormat.parse(w.getDate());
@@ -478,7 +479,7 @@ public class GoogleDataFetcher {
 
 				names.add(new_name);
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
-						.get(i).getEffiency(), workdays.get(i).getDate());
+						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute());
 				topvan.add(entry);
 			}
 		}
@@ -554,7 +555,7 @@ public class GoogleDataFetcher {
 
 		List<Topten> driverAvg = new ArrayList<Topten>();
 
-		Topten driver = new Topten(null, 0, null);
+		Topten driver = new Topten(null, 0, null, null);
 
 		for (int i = 0; i < workdays.size(); i++) {
 			if (name.equalsIgnoreCase(workdays.get(i).getName().toString())) {

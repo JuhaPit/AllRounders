@@ -39,7 +39,7 @@
 <div class="divTableCell"><b>Description</b></div>
 </div>
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/top</div>
 <div class="divTableCell">JSON-Object with top 7 drivers <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
 <div class="divTableCell">200 OK</div>
@@ -47,7 +47,7 @@
 <div class="divTableCell">Returns TOP 7 drivers best runs (Both Vantaa + Helsinki)</div>
 </div>
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/topvan</div>
 <div class="divTableCell">JSON-Object with top 7 drivers in Vantaa <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
 <div class="divTableCell">200 OK</div>
@@ -55,7 +55,7 @@
 <div class="divTableCell">Returns TOP 7 drivers best runs in Vantaa</div>
 </div>
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/tophel</div>
 <div class="divTableCell">JSON-Object with top 7 drivers in Helsinki <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
 <div class="divTableCell">200 OK</div>
@@ -63,7 +63,7 @@
 <div class="divTableCell">Returns TOP 7 drivers best runs in Helsinki</div>
 </div>
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/avg/{driverName}</div>
 <div class="divTableCell">JSON-Object with Driver name, eff and date.<pre>{ "name": "miikka", "eff": 6.223145230592952, "date": null }</pre></div>
 <div class="divTableCell">200 OK</div>
@@ -71,7 +71,7 @@
 <div class="divTableCell">Returns drivers effiency from past month</div>
 </div>
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/listall</div>
 <div class="divTableCell">Returns all google sheets data as JSON-Object</div>
 <div class="divTableCell">200 OK</div>
@@ -79,7 +79,7 @@
 <div class="divTableCell">Returns all google sheets data</div>
 </div>
 <div class="divTableRow">
-<div class="divTableCell">POST</div>
+<div class="divTableCell"><b>POST</b></div>
 <div class="divTableCell">/insert</div>
 <div class="divTableCell">Inserts a row to Google Sheets, formed on the basis of given object. Example: <pre>{
   "timeStamp" : "3/1/2017 11:55:24",
@@ -106,7 +106,7 @@
 <div class="divTableCell">Inserts the given object as a row to the Sheet (at the moment, to the offline Sheet)</div>
 </div>
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/deliveries</div>
 <div class="divTableCell">Returns all google sheets delivery data as JSON-Object<pre>{
   "postnord_total": 795,
@@ -127,14 +127,31 @@
 <div class="divTableCell">Returns delivery count for all delivery types</div>
 </div>
 <div class="divTableRow">
-<div class="divTableCell">POST</div>
-<div class="divTableCell">/updateMotd</div>
-<div class="divTableCell">Updates message of the day, accepts string "enter your new message of the day here" on body. </div>
+<div class="divTableCell"><b>PUT</b></div>
+<div class="divTableCell">/motd</div>
+<div class="divTableCell">Updates message of the day, accepts string "enter your new message of the day here" on body.<pre>{
+  "message": "new message of the day",
+  "last_updated": "4/18/2017 14:43:34"
+}</pre> </div>
 <div class="divTableCell">200 OK</div>
-<div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
+<div class="divTableCell">401 Unauthorized or 400 Bad request</div>
 <div class="divTableCell">Updates message of the day</div>
 </div>
 </div>
+<div class="divTableRow">
+<div class="divTableCell"><b>GET</b></div>
+<div class="divTableCell">/motd</div>
+<div class="divTableCell">Fetches message of the day<pre>{
+  "message": "new message of the day",
+  "last_updated": "4/18/2017 14:43:34"
+}</pre> </div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">401 Unauthorized or 400 Bad request</div>
+<div class="divTableCell">Returns message of the day and when it was last updated</div>
+</div>
+
+
+
 </div>
 
 <br/>
@@ -151,7 +168,7 @@
 
 
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/debug/health</div>
 <div class="divTableCell">Returns server health<pre>{ "status": "UP" }</pre></div>
 <div class="divTableCell">Server is on fire, send help <pre>{ "status": "DOWN" }</pre></div>
@@ -159,7 +176,7 @@
 </div>
 
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/debug/trace</div>
 <div class="divTableCell">JSON object table with last 100 HTTP requests</div>
 <div class="divTableCell">Not applicable here</div>
@@ -167,7 +184,7 @@
 </div>
 
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/debug/mappings</div>
 <div class="divTableCell">JSON List of server endpoints</div>
 <div class="divTableCell">Not applicable here</div>
@@ -175,7 +192,7 @@
 </div>
 
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/debug/metrics</div>
 <div class="divTableCell">JSON Object of server metrics</div>
 <div class="divTableCell">Not applicable here</div>
@@ -183,7 +200,7 @@
 </div>
 
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/debug/logfile</div>
 <div class="divTableCell">Dump of server logs</div>
 <div class="divTableCell">Not applicable here</div>
@@ -191,10 +208,11 @@
 </div>
 
 <div class="divTableRow">
-<div class="divTableCell">GET</div>
+<div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/debug/info</div>
 <div class="divTableCell"><pre>{
   "motd": {
+    "updated": "4/18/2017 14:43:34",
     "message": "new message of the day"
   },
   "app": {

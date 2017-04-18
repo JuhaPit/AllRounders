@@ -2,6 +2,8 @@ package com.fineline.web;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fineline.domain.Deliveries;
+import com.fineline.domain.Motd;
 import com.fineline.domain.SheetsRow;
 import com.fineline.domain.Topten;
 import com.fineline.service.GoogleUploader;
@@ -35,7 +38,8 @@ public class ARController {
 	// Key:Value pair for very simple authentication. SHA512 encrypted word.
 	private static String secret = "B55AF471FFE583FEB96EF0788EBF9FCBA678592F70CB8508F5D43ED64A1C0E90B598C627389A913776EEE1AFEFEDE85AB82CB8AD46DF7AE3CE24072196738A9B";
 
-	
+	// Bean to hold info on message of the day
+	Motd msg = new Motd();
 	
 	/*
 	 * Accepts GET request at endpoint /top, requires header with Secret word
@@ -196,17 +200,39 @@ public class ARController {
 		}
 	}
 
-	@RequestMapping(value = "/updateMotd", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/motd", produces = "application/json", method = RequestMethod.PUT)
 	@ResponseBody public ResponseEntity<Object> updateMotd(
 			@RequestHeader(value = "Secret") String secret_word, @RequestBody String message)
 			throws IOException {
 
 		if (secret.equals(secret_word)) {
+						
+			msg.setMessage(message);
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy HH:mm:ss");
+			LocalDateTime now = LocalDateTime.now();
+			msg.setLast_updated(dtf.format(now));
+			
 			System.setProperty("info.motd.message", message);
-			LOG.info("/updateMotd - Updated message of the day");
-			return new ResponseEntity<Object>(HttpStatus.OK);
+			System.setProperty("info.motd.updated", dtf.format(now));
+			
+			LOG.info("/motd - Updated message of the day");
+			return new ResponseEntity<Object>(msg, HttpStatus.OK);
 		} else {
-			LOG.debug("/updateMotd - Error setting new message of the day");
+			LOG.debug("/motd - Error setting new message of the day");
+			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	@RequestMapping(value = "/motd", produces = "application/json", method = RequestMethod.GET)
+	@ResponseBody public ResponseEntity<Object> getMotd(
+			@RequestHeader(value = "Secret") String secret_word) throws IOException {
+
+		if (secret.equals(secret_word)) {
+			
+			LOG.info("/motd - Fetched message of the day");
+			return new ResponseEntity<Object>(msg, HttpStatus.OK);
+		} else {
+			LOG.debug("/motd - Error fetching new message of the day");
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}

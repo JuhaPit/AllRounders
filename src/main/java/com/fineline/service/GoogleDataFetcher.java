@@ -601,7 +601,7 @@ public class GoogleDataFetcher {
 			System.out.println("");
 			for (List<?> row : values) {
 				// Print columns A and AE, which correspond to indices 0 and 30.
-
+				
 				if (row.get(COLUMN_DATE).toString().length() == 0
 						|| row.get(COLUMN_EVENING_HOURS).toString().length() == 0) {
 					break;
@@ -609,6 +609,7 @@ public class GoogleDataFetcher {
 
 				try {
 
+					
 					postnord_deliveries = postnord_deliveries
 							+ Integer.parseInt((String) row
 									.get(COLUMN_POSTNORD_DELIVERIES));

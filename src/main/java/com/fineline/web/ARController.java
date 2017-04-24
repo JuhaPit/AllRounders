@@ -208,11 +208,11 @@ public class ARController {
 		}
 	}
 
-	@RequestMapping(value = "/motd", produces = "application/json", method = RequestMethod.PUT)
+	@RequestMapping(value = "/motd/{message}", produces = "application/json", method = RequestMethod.PUT)
 	@ResponseBody
 	public ResponseEntity<Object> updateMotd(
 			@RequestHeader(value = "Secret") String secret_word,
-			@RequestBody String message) throws IOException {
+			@PathVariable("message") String message) throws IOException {
 
 		if (secret.equals(secret_word)) {
 
@@ -277,7 +277,7 @@ public class ARController {
 				e.printStackTrace();
 			}
 
-			LOG.info("/sakko - [GET] Fetched sakot");
+			LOG.info("/sakko - [GET] Fetched sakot, current sakko count: " + sssss.getSakko_count());
 			return new ResponseEntity<Object>(sssss, HttpStatus.OK);
 		} else {
 			LOG.debug("/sakko - [GET] Error while fetching sakot");
@@ -329,7 +329,7 @@ public class ARController {
 				e.printStackTrace();
 			}
 
-			LOG.info("/sakko - [PUT]Updated sakot");
+			LOG.info("/sakko - [PUT]Updated sakot, new sakko count: " + sss.getSakko_count());
 			return new ResponseEntity<Object>(sss, HttpStatus.OK);
 		} else {
 			LOG.debug("/sakko - [PUT]Error while fetching sakot");
@@ -388,15 +388,42 @@ public class ARController {
 		}
 	}
 
-	@RequestMapping("/restapi")
+	
+	@RequestMapping(value = "/sakkothreshold/{value}", produces = "application/json", method = RequestMethod.PUT)
+	@ResponseBody
+	public ResponseEntity<Object> setSakkoThreshold(
+			@RequestHeader(value = "Secret") String secret_word, @PathVariable("value") String sakko_threshold)
+			throws IOException {
+
+		if (secret.equals(secret_word)) {			
+			System.setProperty("info.sakko.threshold", sakko_threshold);
+			LOG.info("/sakkothreshold - [PUT] set new sakko threshold");
+			return new ResponseEntity<Object>(sakko_threshold, HttpStatus.OK);
+		} else {
+			LOG.debug("/sakkothreshold - [PUT] Error setting new sakko threshold");
+			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
+		}
+	}
+	
+	/*
+	 * Redirects /info GET to debug/info
+	 */
+	
+	@RequestMapping(value = "/info", method = RequestMethod.GET)
+	public String redirectToInfo() {
+		LOG.info("/info - [GET] Redirecting to Rest API debug/info");
+		return "redirect:debug/info";
+	}
+	
+	@RequestMapping(value = "/restapi", method = RequestMethod.GET)
 	public String rest() {
-		LOG.info("/restapi - Rest API");
+		LOG.info("/restapi - [GET] Rest API");
 		return "index";
 	}
 
-	@RequestMapping("/")
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String restapi() {
-		LOG.info("/ - Index");
+		LOG.info("/ - Index [GET]");
 		return "index";
 	}
 

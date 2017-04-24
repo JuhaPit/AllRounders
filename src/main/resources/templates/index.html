@@ -128,8 +128,8 @@
 </div>
 <div class="divTableRow">
 <div class="divTableCell"><b>PUT</b></div>
-<div class="divTableCell">/motd</div>
-<div class="divTableCell">Updates message of the day, accepts string "enter your new message of the day here" on body.<pre>{
+<div class="divTableCell">/motd/{message}</div>
+<div class="divTableCell">Updates message of the day, {message} is path variable.<pre>{
   "message": "new message of the day",
   "last_updated": "4/18/2017 14:43:34"
 }</pre> </div>
@@ -182,6 +182,38 @@
 <div class="divTableCell">401 Unauthorized or 400 Bad request</div>
 <div class="divTableCell">Reset sakko counter</div>
 </div>
+
+<div class="divTableRow">
+<div class="divTableCell"><b>PUT</b></div>
+<div class="divTableCell">/sakkothreshold/{value}</div>
+<div class="divTableCell">Set sakko threshold value, returns new sakko count</div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">401 Unauthorized or 400 Bad request</div>
+<div class="divTableCell">Set sakko threshold value</div>
+</div>
+
+<div class="divTableRow">
+<div class="divTableCell"><b>GET</b></div>
+<div class="divTableCell">/info</div>
+<div class="divTableCell">Displays application info<pre>{
+  "motd": {
+    "updated": "4/24/2017 13:05:15",
+    "message": "testing testing."
+  },
+  "sakko": {
+    "threshold": "666"
+  },
+  "app": {
+    "version": "1.0.0",
+    "name": "AllRounders REST"
+  }
+}</pre></div>
+<div class="divTableCell">200 OK</div>
+<div class="divTableCell">401 Unauthorized or 400 Bad request</div>
+<div class="divTableCell">Displays application info</div>
+</div>
+
+
 
 </div>
 
@@ -242,12 +274,15 @@
 <div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/debug/info</div>
 <div class="divTableCell"><pre>{
+  "sakko": {
+    "threshold": "666"
+  },
   "motd": {
-    "updated": "4/18/2017 14:43:34",
-    "message": "new message of the day"
+    "message": "Message of day....",
+    "updated": ""
   },
   "app": {
-    "version": "0.0.1",
+    "version": "1.0.0",
     "name": "AllRounders REST"
   }
 }</pre></div>

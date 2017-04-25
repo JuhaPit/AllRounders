@@ -506,11 +506,16 @@ public class GoogleDataFetcher {
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = new Date();
 		Date date1 = new Date();
+		Date date2 = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.add(Calendar.MONTH, -1);
 		date = cal.getTime();
-
+		
+		Calendar cal2 = Calendar.getInstance();
+		cal2.set(Calendar.YEAR, Calendar.MONTH+1 , 1);
+		date2 = cal2.getTime();
+				
 		if (values == null || values.size() == 0) {
 			LOG.info("GoogleDataFetcher - driverAvg - No data found");
 		} else {
@@ -540,7 +545,7 @@ public class GoogleDataFetcher {
 					e.printStackTrace();
 				}
 
-				if (date1.after(date)) {
+				if (date1.after(date2)) {
 					workdays.add(w);
 
 				}

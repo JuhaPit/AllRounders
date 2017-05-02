@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 public class GoogleUploader {
 
 	private static final String APPLICATION_NAME = "REAL DATA FEEDER";
+	private static final String SPREADSHEET_ID = "1YmlQACbcTwP6vTX0qAd45iL-Nw8hqv7rCTDLGQWtEX0";
 	private static final String CLIENT_GOD_MODE = "4/yoGolvyeAkIfVqspGBOHuGbPlGo49bUx0YK9p6M1m8s#";
 	private static final java.io.File DATA_STORE_DIR = new java.io.File(
 			System.getProperty("user.home"),
@@ -106,7 +107,7 @@ public class GoogleUploader {
 		Sheets service = getSheetsService();
 
 		// Prints the names and majors of students in a sample spreadsheet:
-		String spreadsheetId = "1_BYWrz6frWL_8rcvIGBGQ0nbXnuE9UBVP6E4b7jRvYE";
+		String spreadsheetId = SPREADSHEET_ID;
 
 		List<List<Object>> arrData = getData(row);
 
@@ -180,7 +181,7 @@ public class GoogleUploader {
 		
 		Sheets service = getSheetsService();
 
-		String spreadsheetId = "1_BYWrz6frWL_8rcvIGBGQ0nbXnuE9UBVP6E4b7jRvYE";
+		String spreadsheetId = SPREADSHEET_ID;
 		String range = "Form Responses 1!A2:T";
 		ValueRange response = service.spreadsheets().values()
 				.get(spreadsheetId, range).execute();

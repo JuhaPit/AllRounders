@@ -1,16 +1,10 @@
 package com.fineline.web;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +23,7 @@ import com.fineline.domain.Sakko;
 import com.fineline.domain.SheetsRow;
 import com.fineline.domain.Topten;
 import com.fineline.service.GoogleUploader;
+import com.fineline.service.SakkoService;
 import com.fineline.domain.WorkDay_GoogleSheets;
 import com.fineline.service.GoogleDataFetcher;
 import com.google.gdata.util.ServiceException;
@@ -257,28 +252,15 @@ public class ARController {
 	@ResponseBody
 	public ResponseEntity<Object> getSakot(
 			@RequestHeader(value = "Secret") String secret_word)
-			throws IOException {
+			throws Exception {
 
 		if (secret.equals(secret_word)) {
-			Sakko sssss = new Sakko();
-			Path path;
-			try {
-				path = Paths.get(getClass().getClassLoader()
-						.getResource("sakko.txt").toURI());
-				StringBuilder data = new StringBuilder();
-				Stream<String> lines = Files.lines(path);
-				lines.forEach(line -> data.append(line).append(""));
-				lines.close();
-				System.out.println("Sakko count: " + data);
 
-				sssss.setSakko_count(data.toString());
-			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			SakkoService s = new SakkoService();
+			Sakko sakko = s.readSakko();
 
-			LOG.info("/sakko - [GET] Fetched sakot, current sakko count: " + sssss.getSakko_count());
-			return new ResponseEntity<Object>(sssss, HttpStatus.OK);
+			LOG.info("/sakko - [GET] Fetched sakot, current sakko count: " + sakko.getSakko_count());
+			return new ResponseEntity<Object>(sakko, HttpStatus.OK);
 		} else {
 			LOG.debug("/sakko - [GET] Error while fetching sakot");
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
@@ -296,41 +278,12 @@ public class ARController {
 			throws Exception {
 
 		if (secret.equals(secret_word)) {
-			Sakko sss = new Sakko();
-			Path path;
-			try {
+		
+			SakkoService s = new SakkoService();
+			Sakko sakko = s.writeSakko();
 
-				path = Paths.get(getClass().getClassLoader()
-						.getResource("sakko.txt").toURI());
-				StringBuilder data = new StringBuilder();
-				Stream<String> lines = Files.lines(path);
-				lines.forEach(line -> data.append(line));
-				lines.close();
-				System.out.println(path.toString());
-
-				System.out.println("Sakko count: " + data);
-
-				String myString = data.toString();
-
-				int new_sakko_count = Integer.parseInt(myString);
-				new_sakko_count++;
-				System.out.println(new_sakko_count);
-
-				try {
-					FileWriter writer = new FileWriter(path.toString());
-					writer.write("" + new_sakko_count);
-					writer.close();
-					sss.setSakko_count("" + new_sakko_count);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-
-			LOG.info("/sakko - [PUT]Updated sakot, new sakko count: " + sss.getSakko_count());
-			return new ResponseEntity<Object>(sss, HttpStatus.OK);
+			LOG.info("/sakko - [PUT]Updated sakot, new sakko count: " + sakko.getSakko_count());
+			return new ResponseEntity<Object>(sakko, HttpStatus.OK);
 		} else {
 			LOG.debug("/sakko - [PUT]Error while fetching sakot");
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
@@ -348,40 +301,10 @@ public class ARController {
 			throws Exception {
 
 		if (secret.equals(secret_word)) {
-
-			Path path;
-			Sakko ssss = new Sakko();
-			try {
-
-				path = Paths.get(getClass().getClassLoader()
-						.getResource("sakko.txt").toURI());
-				StringBuilder data = new StringBuilder();
-				Stream<String> lines = Files.lines(path);
-				lines.forEach(line -> data.append(line));
-				lines.close();
-				System.out.println(path.toString());
-
-				String myString = data.toString();
-
-				int new_sakko_count = Integer.parseInt(myString);
-				new_sakko_count++;
-				System.out.println(new_sakko_count);
-
-				try {
-					FileWriter writer = new FileWriter(path.toString());
-					writer.write("" + 0);
-					writer.close();
-					ssss.setSakko_count("" + 0);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-
+			SakkoService s = new SakkoService();
+			Sakko sakko = s.resetSakko();
 			LOG.info("/sakko - [DELETE] Set Sakko count to 0");
-			return new ResponseEntity<Object>(ssss, HttpStatus.OK);
+			return new ResponseEntity<Object>(sakko, HttpStatus.OK);
 		} else {
 			LOG.debug("/sakko - [DELETE]Error while fetching sakot");
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);

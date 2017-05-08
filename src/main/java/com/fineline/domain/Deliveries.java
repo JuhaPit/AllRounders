@@ -20,7 +20,7 @@ public class Deliveries {
 
 	public Deliveries() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Deliveries(int postnord_total, int postnord_pickups,

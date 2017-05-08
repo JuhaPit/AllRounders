@@ -6,7 +6,6 @@ public class Sakko {
 
 	public Sakko() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Sakko(String sakko_count) {

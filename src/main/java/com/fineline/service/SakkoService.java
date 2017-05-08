@@ -28,7 +28,7 @@ public class SakkoService {
 
 			sakko.setSakko_count(data.toString());
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		

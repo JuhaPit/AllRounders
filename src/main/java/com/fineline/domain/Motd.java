@@ -7,7 +7,7 @@ public class Motd {
 
 	public Motd() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Motd(String message, String last_updated) {

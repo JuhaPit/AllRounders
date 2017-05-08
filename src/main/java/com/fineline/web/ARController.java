@@ -310,6 +310,10 @@ public class ARController {
 			return new ResponseEntity<Object>(HttpStatus.UNAUTHORIZED);
 		}
 	}
+	
+	/*  
+	 *  Set sakko threshold
+	 */
 
 	
 	@RequestMapping(value = "/sakkothreshold/{value}", produces = "application/json", method = RequestMethod.PUT)

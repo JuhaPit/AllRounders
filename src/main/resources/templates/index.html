@@ -41,7 +41,14 @@
 <div class="divTableRow">
 <div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/top</div>
-<div class="divTableCell">JSON-Object with top 7 drivers <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
+<div class="divTableCell">JSON-Object with top 7 drivers, best single run, workdays and AVG efficiency <pre>  {
+    "name": "Janne Hasa",
+    "eff": 12,
+    "date": "24-04-2017",
+    "route": "FIVAN000",
+    "work_days": 27,
+    "avg_eff": 6.843075588330984
+  }</pre></div>
 <div class="divTableCell">200 OK</div>
 <div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Returns TOP 7 drivers best runs (Both Vantaa + Helsinki)</div>
@@ -49,7 +56,14 @@
 <div class="divTableRow">
 <div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/topvan</div>
-<div class="divTableCell">JSON-Object with top 7 drivers in Vantaa <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
+<div class="divTableCell">JSON-Object with top 7 drivers in Vantaa, best single run, workdays and AVG efficiency  <pre>  {
+    "name": "Ville Kokkonen",
+    "eff": 11.09,
+    "date": "02-05-2017",
+    "route": "FIHEL004",
+    "work_days": 50,
+    "avg_eff": 8.371098324761956
+  }</pre></div>
 <div class="divTableCell">200 OK</div>
 <div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Returns TOP 7 drivers best runs in Vantaa</div>
@@ -57,7 +71,14 @@
 <div class="divTableRow">
 <div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/tophel</div>
-<div class="divTableCell">JSON-Object with top 7 drivers in Helsinki <pre>{ name: "name", eff: 0.00, date: "01-01-1970" }</pre></div>
+<div class="divTableCell">JSON-Object with top 7 drivers in Helsinki, best single run , workdays and AVG efficiency  <pre>  {
+    "name": "Janne Hasa",
+    "eff": 12,
+    "date": "24-04-2017",
+    "route": "FIVAN000",
+    "work_days": 27,
+    "avg_eff": 6.843075588330984
+  }</pre></div>
 <div class="divTableCell">200 OK</div>
 <div class="divTableCell">Empty Body OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Returns TOP 7 drivers best runs in Helsinki</div>
@@ -65,7 +86,14 @@
 <div class="divTableRow">
 <div class="divTableCell"><b>GET</b></div>
 <div class="divTableCell">/avg/{driverName}</div>
-<div class="divTableCell">JSON-Object with Driver name, eff and date.<pre>{ "name": "miikka", "eff": 6.223145230592952, "date": null }</pre></div>
+<div class="divTableCell">JSON-Object with Driver name, avg efficiency and workdays.<pre>  {
+    "name": "Antti Viirna",
+    "eff": 8.262184276058344,
+    "date": null,
+    "route": null,
+    "work_days": 37,
+    "avg_eff": 8.262184276058344
+  }</pre></div>
 <div class="divTableCell">200 OK</div>
 <div class="divTableCell">Empty AVG JSON-Object OR HTTP Status 401 Unauthorized</div>
 <div class="divTableCell">Returns drivers efficiency from past calendar month</div>

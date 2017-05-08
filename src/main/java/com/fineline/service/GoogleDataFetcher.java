@@ -228,10 +228,14 @@ public class GoogleDataFetcher {
 			new_name = workdays.get(i).getName().toLowerCase();
 
 			if (!names.contains(new_name)) {
+				
+				List<Topten> test = new ArrayList<Topten>();
+				
+				test = driverAvg(new_name);
 
 				names.add(new_name);
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
-						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute());
+						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute(), test.get(0).getWork_days() , test.get(0).getAvg_eff());
 				topten.add(entry);
 			}
 		}
@@ -382,6 +386,7 @@ public class GoogleDataFetcher {
 		List<String> names = new ArrayList<String>();
 
 		String new_name;
+		
 
 		List<Topten> tophel = new ArrayList<Topten>();
 		for (int i = 0; i < workdays.size(); i++) {
@@ -391,11 +396,20 @@ public class GoogleDataFetcher {
 			if (!names.contains(new_name)) {
 
 				names.add(new_name);
+				
+				List<Topten> test = new ArrayList<Topten>();
+				
+				test = driverAvg(new_name);
+				
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
-						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute());
+						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute(), test.get(0).getWork_days() , test.get(0).getAvg_eff());
 				tophel.add(entry);
 			}
 		}
+		
+
+		
+		
 
 		if (tophel.size() > 6) {
 			tophel = tophel.subList(0, 7);
@@ -478,8 +492,12 @@ public class GoogleDataFetcher {
 			if (!names.contains(new_name)) {
 
 				names.add(new_name);
+				
+				List<Topten> test = new ArrayList<Topten>();
+				
+				test = driverAvg(new_name);
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
-						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute());
+						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute(), test.get(0).getWork_days() , test.get(0).getAvg_eff());
 				topvan.add(entry);
 			}
 		}
@@ -560,7 +578,7 @@ public class GoogleDataFetcher {
 
 		List<Topten> driverAvg = new ArrayList<Topten>();
 
-		Topten driver = new Topten(null, 0, null, null);
+		Topten driver = new Topten(null, 0, null, null, 0, 0);
 
 		for (int i = 0; i < workdays.size(); i++) {
 			if (name.equalsIgnoreCase(workdays.get(i).getName().toString())) {
@@ -581,6 +599,8 @@ public class GoogleDataFetcher {
 
 		avg = (postnord + bring) / avg;
 		driver.setEff(avg);
+		driver.setWork_days(count);
+		driver.setAvg_eff(avg);
 		driverAvg.add(driver);
 		return driverAvg;
 	}

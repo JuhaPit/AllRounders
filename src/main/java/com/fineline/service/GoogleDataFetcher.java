@@ -193,6 +193,8 @@ public class GoogleDataFetcher {
 				w.setDate(row.get(COLUMN_DATE).toString());
 				w.setName(row.get(COLUMN_NAME).toString());
 				w.setRoute(row.get(COLUMN_ROUTE).toString());
+				w.setPostnord_total(row.get(COLUMN_POSTNORD_TOTAL).toString());
+				w.setBring_total(row.get(COLUMN_BRING_TOTAL).toString());
 
 				try {
 
@@ -231,7 +233,7 @@ public class GoogleDataFetcher {
 				
 				List<Topten> test = new ArrayList<Topten>();
 				
-				test = driverAvg(new_name);
+				test = driverAvgTop(new_name, workdays);
 
 				names.add(new_name);
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
@@ -357,6 +359,8 @@ public class GoogleDataFetcher {
 				w.setDate(row.get(COLUMN_DATE).toString());
 				w.setName(row.get(COLUMN_NAME).toString());
 				w.setRoute(row.get(COLUMN_ROUTE).toString());
+				w.setPostnord_total(row.get(COLUMN_POSTNORD_TOTAL).toString());
+				w.setBring_total(row.get(COLUMN_BRING_TOTAL).toString());
 				try {
 					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
 							.toString()));
@@ -399,7 +403,7 @@ public class GoogleDataFetcher {
 				
 				List<Topten> test = new ArrayList<Topten>();
 				
-				test = driverAvg(new_name);
+				test = driverAvgTop(new_name, workdays);
 				
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
 						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute(), test.get(0).getWork_days() , test.get(0).getAvg_eff());
@@ -453,6 +457,8 @@ public class GoogleDataFetcher {
 				w.setDate(row.get(COLUMN_DATE).toString());
 				w.setName(row.get(COLUMN_NAME).toString());
 				w.setRoute(row.get(COLUMN_ROUTE).toString());
+				w.setPostnord_total(row.get(COLUMN_POSTNORD_TOTAL).toString());
+				w.setBring_total(row.get(COLUMN_BRING_TOTAL).toString());
 
 				try {
 					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
@@ -483,7 +489,7 @@ public class GoogleDataFetcher {
 		List<String> names = new ArrayList<String>();
 
 		String new_name;
-
+		System.out.println("test");
 		List<Topten> topvan = new ArrayList<Topten>();
 		for (int i = 0; i < workdays.size(); i++) {
 
@@ -495,7 +501,8 @@ public class GoogleDataFetcher {
 				
 				List<Topten> test = new ArrayList<Topten>();
 				
-				test = driverAvg(new_name);
+				test = driverAvgTop(new_name, workdays);
+				
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
 						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute(), test.get(0).getWork_days() , test.get(0).getAvg_eff());
 				topvan.add(entry);
@@ -685,6 +692,51 @@ public class GoogleDataFetcher {
 				innight_stops, total_deliveries, total_pickups);
 
 		return d;
+	}
+	
+	public static List<Topten> driverAvgTop(String name, List<WorkDay_GoogleSheets> workdays) throws IOException {
+
+		int postnord = 0;
+		int bring = 0;
+		double avg = 0;
+		int count = 0;
+
+		List<Topten> driverAvg = new ArrayList<Topten>();
+
+		Topten driver = new Topten(null, 0, null, null, 0, 0);
+
+		for (int i = 0; i < workdays.size(); i++) {
+			if (name.equalsIgnoreCase(workdays.get(i).getName().toString())) {
+				
+				System.out.println(workdays.get(i).toString());
+				
+				try {
+					count++;									
+					postnord = postnord + Integer.parseInt(workdays.get(i).getPostnord_total());
+					bring = bring + Integer.parseInt(workdays.get(i).getBring_total());
+					avg = avg + workdays.get(i).getEffiency();
+					
+				} catch (Exception e) {
+					LOG.info("GoogleDataFetcher - driverAvgTop parse error, problem with sheet data?");
+				}
+				
+
+			}
+
+		}
+
+		if (count != 0) {
+			driver.setName(name);
+		}
+		
+		avg = (postnord + bring) / avg;
+		driver.setEff(avg);
+		driver.setWork_days(count);
+		driver.setAvg_eff(avg);
+		driverAvg.add(driver);
+		
+		System.out.println(driverAvg);
+		return driverAvg;
 	}
 
 }

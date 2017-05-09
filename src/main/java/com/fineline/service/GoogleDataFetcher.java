@@ -175,8 +175,9 @@ public class GoogleDataFetcher {
 		Date date1 = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		cal.add(Calendar.MONTH, -1);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
 		date = cal.getTime();
+		System.out.println(date);
 
 		List<WorkDay_GoogleSheets> workdays = new ArrayList<WorkDay_GoogleSheets>();
 
@@ -246,7 +247,10 @@ public class GoogleDataFetcher {
 		
 		topten.sort(Comparator.comparing(Topten::getAvg_eff).reversed());
 
-		topten = topten.subList(0, 7);
+		if(topten.size() > 6){
+			topten = topten.subList(0, 7);
+		}
+		
 		LOG.info("GoogleDataFetcher - topten - Topten size: " + topten.size());
 		return topten;
 	}
@@ -315,17 +319,25 @@ public class GoogleDataFetcher {
 							COLUMN_NIGHT_HOURS_DECIMAL).toString()));
 					w.setHours_total_decimal(Double.parseDouble(row.get(
 							COLUMN_HOURS_TOTAL_DECIMAL).toString()));
-					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
-							.toString()));
+					
 				} catch (Exception e) {
 					LOG.debug("GoogleDataFetcher - topten - Exploded, tried to get COLUMN_EVENING_HOURS_DECIMAL, COLUMN_NIGHT_HOURS_DECIMAL or COLUMN_HOURS_TOTAL_DECIMAL");
 					break;
+				}
+				
+				try {
+					
+					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
+							.toString()));
+				} catch(Exception e){
+					w.setEffiency(0.00);
 				}
 
 				workdays.add(w);
 			}
 		}
 
+		System.out.println("*****Löytyi " + workdays.size());
 		return workdays;
 	}
 
@@ -346,7 +358,7 @@ public class GoogleDataFetcher {
 		Date date1 = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		cal.add(Calendar.MONTH, -1);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
 		date = cal.getTime();
 		LOG.info("GoogleDataFetcher - tophel - Formatted date: " + dateFormat.format(date));
 
@@ -445,7 +457,7 @@ public class GoogleDataFetcher {
 		Date date1 = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		cal.add(Calendar.MONTH, -1);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
 		date = cal.getTime();
 
 		if (values == null || values.size() == 0) {
@@ -542,15 +554,12 @@ public class GoogleDataFetcher {
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = new Date();
 		Date date1 = new Date();
-		Date date2 = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		cal.add(Calendar.MONTH, -1);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
 		date = cal.getTime();
 		
-		Calendar cal2 = Calendar.getInstance();
-		cal2.set(Calendar.YEAR, Calendar.MONTH+1 , 1);
-		date2 = cal2.getTime();
+		
 				
 		if (values == null || values.size() == 0) {
 			LOG.info("GoogleDataFetcher - driverAvg - No data found");
@@ -581,7 +590,8 @@ public class GoogleDataFetcher {
 					e.printStackTrace();
 				}
 
-				if (date1.after(date2)) {
+				if (date1.after(date)) {
+					System.out.println(date);
 					workdays.add(w);
 
 				}

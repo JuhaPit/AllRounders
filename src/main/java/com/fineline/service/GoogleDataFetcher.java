@@ -201,6 +201,7 @@ public class GoogleDataFetcher {
 
 					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
 							.toString()));
+					w.setHours_total_decimal(Double.parseDouble(row.get(COLUMN_HOURS_TOTAL_DECIMAL).toString()));
 				} catch (Exception e) {
 					LOG.debug("GoogleDataFetcher - topten - Exploded, tried to get COLUMN_EFFIENCY");
 					break;
@@ -337,7 +338,7 @@ public class GoogleDataFetcher {
 			}
 		}
 
-		System.out.println("*****Löytyi " + workdays.size());
+		
 		return workdays;
 	}
 
@@ -380,6 +381,7 @@ public class GoogleDataFetcher {
 				try {
 					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
 							.toString()));
+					w.setHours_total_decimal(Double.parseDouble(row.get(COLUMN_HOURS_TOTAL_DECIMAL).toString()));
 				} catch (Exception e) {
 					LOG.debug("GoogleDataFetcher - tophel - Exploded, tried to get COLUMN_EFFICIENCY");
 					break;
@@ -481,6 +483,7 @@ public class GoogleDataFetcher {
 				try {
 					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
 							.toString()));
+					w.setHours_total_decimal(Double.parseDouble(row.get(COLUMN_HOURS_TOTAL_DECIMAL).toString()));
 				} catch (Exception e) {
 					LOG.debug("GoogleDataFetcher - topvan - Exploded, tried to get COLUMN_EFFICIENCY");
 					break;
@@ -507,7 +510,7 @@ public class GoogleDataFetcher {
 		List<String> names = new ArrayList<String>();
 
 		String new_name;
-		System.out.println("test");
+		
 		List<Topten> topvan = new ArrayList<Topten>();
 		for (int i = 0; i < workdays.size(); i++) {
 
@@ -577,8 +580,7 @@ public class GoogleDataFetcher {
 				w.setBring_total(row.get(COLUMN_BRING_TOTAL).toString());
 
 				try {
-					w.setEffiency(Double.parseDouble(row.get(COLUMN_EFFICIENCY)
-							.toString()));
+					w.setHours_total_decimal(Double.parseDouble(row.get(COLUMN_HOURS_TOTAL_DECIMAL).toString()));
 				} catch (Exception e) {
 					LOG.debug("GoogleDataFetcher - driverAvg - Exploded, tried to get COLUMN_EFFICIENCY");
 					break;
@@ -591,7 +593,6 @@ public class GoogleDataFetcher {
 				}
 
 				if (date1.after(date)) {
-					System.out.println(date);
 					workdays.add(w);
 
 				}
@@ -603,6 +604,9 @@ public class GoogleDataFetcher {
 		int bring = 0;
 		double avg = 0;
 		int count = 0;
+		
+		
+		double hours = 0;
 
 		List<Topten> driverAvg = new ArrayList<Topten>();
 
@@ -615,7 +619,7 @@ public class GoogleDataFetcher {
 						+ Integer.parseInt(workdays.get(i).getPostnord_total());
 				bring = bring
 						+ Integer.parseInt(workdays.get(i).getBring_total());
-				avg = avg + workdays.get(i).getEffiency();
+				hours = hours + workdays.get(i).getHours_total_decimal();
 
 			}
 
@@ -625,7 +629,7 @@ public class GoogleDataFetcher {
 			driver.setName(name);
 		}
 
-		avg = (postnord + bring) / avg;
+		avg = (postnord + bring) / hours;
 		driver.setEff(avg);
 		driver.setWork_days(count);
 		driver.setAvg_eff(avg);
@@ -721,6 +725,8 @@ public class GoogleDataFetcher {
 		int bring = 0;
 		double avg = 0;
 		int count = 0;
+		
+		double hours = 0;
 
 		List<Topten> driverAvg = new ArrayList<Topten>();
 
@@ -729,13 +735,13 @@ public class GoogleDataFetcher {
 		for (int i = 0; i < workdays.size(); i++) {
 			if (name.equalsIgnoreCase(workdays.get(i).getName().toString())) {
 				
-				System.out.println(workdays.get(i).toString());
+				
 				
 				try {
 					count++;									
 					postnord = postnord + Integer.parseInt(workdays.get(i).getPostnord_total());
 					bring = bring + Integer.parseInt(workdays.get(i).getBring_total());
-					avg = avg + workdays.get(i).getEffiency();
+					hours = hours + workdays.get(i).getHours_total_decimal();
 					
 				} catch (Exception e) {
 					LOG.info("GoogleDataFetcher - driverAvgTop parse error, problem with sheet data?");
@@ -750,13 +756,12 @@ public class GoogleDataFetcher {
 			driver.setName(name);
 		}
 		
-		avg = (postnord + bring) / avg;
+		avg = (postnord + bring) / hours;
 		driver.setEff(avg);
 		driver.setWork_days(count);
 		driver.setAvg_eff(avg);
 		driverAvg.add(driver);
 		
-		System.out.println(driverAvg);
 		return driverAvg;
 	}
 

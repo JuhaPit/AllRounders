@@ -238,9 +238,13 @@ public class GoogleDataFetcher {
 				names.add(new_name);
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
 						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute(), test.get(0).getWork_days() , test.get(0).getAvg_eff());
+				if(!Double.isNaN(test.get(0).getAvg_eff())){
 				topten.add(entry);
+				}
 			}
 		}
+		
+		topten.sort(Comparator.comparing(Topten::getAvg_eff).reversed());
 
 		topten = topten.subList(0, 7);
 		LOG.info("GoogleDataFetcher - topten - Topten size: " + topten.size());
@@ -407,14 +411,16 @@ public class GoogleDataFetcher {
 				
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
 						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute(), test.get(0).getWork_days() , test.get(0).getAvg_eff());
+				if(!Double.isNaN(test.get(0).getAvg_eff())){
 				tophel.add(entry);
+				}
 			}
 		}
 		
 
 		
 		
-
+		tophel.sort(Comparator.comparing(Topten::getAvg_eff).reversed());
 		if (tophel.size() > 6) {
 			tophel = tophel.subList(0, 7);
 		}
@@ -505,10 +511,15 @@ public class GoogleDataFetcher {
 				
 				Topten entry = new Topten(workdays.get(i).getName(), workdays
 						.get(i).getEffiency(), workdays.get(i).getDate(), workdays.get(i).getRoute(), test.get(0).getWork_days() , test.get(0).getAvg_eff());
+				if(!Double.isNaN(test.get(0).getAvg_eff())){
 				topvan.add(entry);
+				
+				}
 			}
 		}
 
+		topvan.sort(Comparator.comparing(Topten::getAvg_eff).reversed());
+		
 		if (topvan.size() > 6) {
 			topvan = topvan.subList(0, 7);
 		}
